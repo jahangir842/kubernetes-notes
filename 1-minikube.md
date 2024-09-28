@@ -34,12 +34,29 @@ minikube start
 
 it will show the following:
 ```
-minikube start
-😄  minikube v1.34.0 on Ubuntu 24.04
-✨  Automatically selected the docker driver. Other choices: virtualbox, vmware, none, ssh
+minikube v1.34.0 on Ubuntu 22.04
+✨  Automatically selected the docker driver. Other choices: none, ssh
 📌  Using Docker driver with root privileges
 👍  Starting "minikube" primary control-plane node in "minikube" cluster
 🚜  Pulling base image v0.0.45 ...
 💾  Downloading Kubernetes v1.31.0 preload ...
+    > preloaded-images-k8s-v18-v1...:  326.69 MiB / 326.69 MiB  100.00% 3.25 Mi
+    > gcr.io/k8s-minikube/kicbase...:  487.90 MiB / 487.90 MiB  100.00% 2.73 Mi
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...
+🐳  Preparing Kubernetes v1.31.0 on Docker 27.2.0 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring bridge CNI (Container Networking Interface) ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+💡  kubectl not found. If you need it, try: 'minikube kubectl -- get pods -A'
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
 ```
 
+### 1111e:
+```
+1111
+```
