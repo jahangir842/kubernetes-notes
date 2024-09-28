@@ -8,6 +8,17 @@ minikube is local Kubernetes, focusing on making it easy to learn and develop fo
 
 All you need is Docker (or similarly compatible) container or a Virtual Machine environment, and Kubernetes is a single command away: minikube start
 
+**Kubernetes in Containers (KIC)** is an architecture where Kubernetes clusters run inside containers instead of virtual machines. This is used by tools like **Minikube** with the **Docker driver**, which spins up Kubernetes nodes (control plane and workers) as lightweight containers. 
+
+### Key Benefits:
+- **Faster startup** and **lower resource usage** compared to running full VMs.
+- **Efficient networking** using the container runtime’s network.
+- Ideal for **local development** and testing.
+
+The **`kicbase`** image is a core part of this setup, acting as the base image for nodes within Minikube's containerized environment.
+
+In short, KIC makes it faster and easier to run Kubernetes clusters locally using containers instead of virtual machines.
+
 ### **Installing Dependencies**
 
 1. **Install Driver (Preferred Docker)**
