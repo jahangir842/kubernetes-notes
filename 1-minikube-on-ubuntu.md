@@ -1,4 +1,4 @@
-### Minikube on Ubuntu
+## Minikube on Ubuntu
 
 **Geting Started:** https://minikube.sigs.k8s.io/docs/start/
 
@@ -153,8 +153,46 @@ minikube v1.34.0 on Ubuntu 22.04
    ```bash
    minikube status
    ```
+### Cluster Management with Minikube
 
-### 5. **Use Minikube**
+- **Pause the cluster without affecting running applications**:
+  ```bash
+  minikube pause
+  ```
+
+- **Resume a paused cluster**:
+  ```bash
+  minikube unpause
+  ```
+
+- **Stop the running cluster**:
+  ```bash
+  minikube stop
+  ```
+
+- **Set a new memory limit (requires a restart)**:
+  ```bash
+  minikube config set memory 9001
+  ```
+
+- **View available add-ons for easy installation**:
+  ```bash
+  minikube addons list
+  ```
+
+- **Start a second cluster with an older Kubernetes version**:
+  ```bash
+  minikube start -p aged --kubernetes-version=v1.16.1
+  ```
+
+- **Delete all clusters**:
+  ```bash
+  minikube delete --all
+  ```
+
+---
+
+## Use Minikube
 
 #### **Check Cluster Status**
 You can check your Minikube Kubernetes cluster using `kubectl`:
@@ -195,7 +233,6 @@ You can deploy a simple Kubernetes application on Minikube. Here’s an example 
    kubectl get deployment
    ```
 
-
 4. Check the pods:
 
    ```bash
@@ -227,7 +264,7 @@ kubectl port-forward service/hello-minikube 7080:80
 ```
 Tada! Your application is now available at http://localhost:7080/.
 
-### 6. **Stop and Delete Minikube Cluster**
+### **Stop and Delete Minikube Cluster**
 
 To stop the Minikube cluster:
 
@@ -241,7 +278,7 @@ To delete the Minikube cluster:
 minikube delete
 ```
 
-###  7. Show Default Images
+### Show Default Images
 
 This command lists the container images currently available in your Minikube cluster. 
 
