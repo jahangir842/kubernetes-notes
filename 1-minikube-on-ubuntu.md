@@ -200,23 +200,11 @@ minikube delete
 
 ###  7. Show Default Images
 
-The `minikube image ls` command lists the container images currently available in your Minikube cluster. 
+This command lists the container images currently available in your Minikube cluster. 
 
-#### Why These Images Are Available After Installation
-
-1. **Default Components**: Minikube includes essential Kubernetes components (API server, scheduler, controller manager) to create a functional cluster.
-
-2. **Pod Management**: The `pause` container manages pod lifecycles and holds network namespaces.
-
-3. **Service Discovery**: CoreDNS provides DNS services for inter-service communication within the cluster.
-
-4. **Persistent Storage**: The storage provisioner handles dynamic volume provisioning for applications.
-
-5. **Monitoring**: Metrics scraper and dashboard images enable monitoring and management through a web interface.
-
-6. **Simplified Setup**: Bundling these images allows for a quick and efficient setup, enabling users to start using Kubernetes without manual configuration.
-
-The `minikube image ls` command helps you view essential container images that ensure your Minikube cluster is ready to manage Kubernetes workloads effectively.
+```bash
+minikube image ls
+```
 
 These are the default Images:
 
@@ -251,6 +239,22 @@ These are the default Images:
     - Web-based interface for managing and monitoring Kubernetes resources (tag unspecified).
 
 These images are crucial for the functionality and management of a Minikube Kubernetes cluster, handling core operations, networking, and service discovery.
+
+#### Why These Images Are Available After Installation
+
+1. **Default Components**: Minikube includes essential Kubernetes components (API server, scheduler, controller manager) to create a functional cluster.
+
+2. **Pod Management**: The `pause` container manages pod lifecycles and holds network namespaces.
+
+3. **Service Discovery**: CoreDNS provides DNS services for inter-service communication within the cluster.
+
+4. **Persistent Storage**: The storage provisioner handles dynamic volume provisioning for applications.
+
+5. **Monitoring**: Metrics scraper and dashboard images enable monitoring and management through a web interface.
+
+6. **Simplified Setup**: Bundling these images allows for a quick and efficient setup, enabling users to start using Kubernetes without manual configuration.
+
+The `minikube image ls` command helps you view essential container images that ensure your Minikube cluster is ready to manage Kubernetes workloads effectively.
 
 ### 8. **Additional Minikube Commands**
 
