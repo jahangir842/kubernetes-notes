@@ -13,44 +13,6 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 ```
 
-
-### Start Minikube:
-
-```
-minikube start
-```
-
-
-
-### If Fails to Start:
-
-If minikube fails to start, see the drivers page for help setting up a compatible container or virtual-machine manager.
-
-(https://minikube.sigs.k8s.io/docs/drivers/)
-
-### Interact with your cluster
-
-
-
-
-
-
-### How to Install and Use Minikube in Ubuntu
-
-Minikube is a tool that allows you to run a single-node Kubernetes cluster on your local machine. It’s an excellent tool for development and testing. Here's a step-by-step guide to install and use Minikube on Ubuntu.
-
-### 1. **System Requirements**
-Before installing Minikube, ensure your system meets the following requirements:
-- Ubuntu 18.04 or newer.
-- At least 2 GB of free memory.
-- 2 CPUs or more.
-- Virtualization support enabled in your BIOS (if using a virtual driver like KVM).
-
-### 2. **Prerequisites**
-You'll need to install some required dependencies, including:
-- Docker or another driver (e.g., KVM, VirtualBox).
-- Kubernetes command-line tool (`kubectl`).
-
 #### **Installing Dependencies**
 
 1. **Install Docker (Preferred Driver)**
@@ -93,6 +55,38 @@ You'll need to install some required dependencies, including:
    kubectl version --client --output=yaml
 
    ```
+
+### Start Minikube:
+
+```
+minikube start
+```
+
+
+
+### If Fails to Start:
+
+If minikube fails to start, see the drivers page for help setting up a compatible container or virtual-machine manager.
+
+(https://minikube.sigs.k8s.io/docs/drivers/)
+
+### How to Install and Use Minikube in Ubuntu
+
+Minikube is a tool that allows you to run a single-node Kubernetes cluster on your local machine. It’s an excellent tool for development and testing. Here's a step-by-step guide to install and use Minikube on Ubuntu.
+
+### 1. **System Requirements**
+Before installing Minikube, ensure your system meets the following requirements:
+- Ubuntu 18.04 or newer.
+- At least 2 GB of free memory.
+- 2 CPUs or more.
+- Virtualization support enabled in your BIOS (if using a virtual driver like KVM).
+
+### 2. **Prerequisites**
+You'll need to install some required dependencies, including:
+- Docker or another driver (e.g., KVM, VirtualBox).
+- Kubernetes command-line tool (`kubectl`).
+
+
 
 ### 3. **Install Minikube**
 Once you have Docker and `kubectl` set up, you can proceed to install Minikube:
