@@ -26,6 +26,8 @@ CoreDNS is running at https://192.168.49.2:8443/api/v1/namespaces/kube-system/se
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
+The **control plane** is responsible for managing the Kubernetes cluster and is accessible via the API server.
+**CoreDNS** provides DNS resolution for services in the cluster, allowing pods to communicate using service names instead of IP addresses. It's running within the kube-system namespace and accessible via a proxy URL.
 
 #### 3. **Basic `kubectl` Commands**
 
