@@ -8,7 +8,7 @@ minikube is local Kubernetes, focusing on making it easy to learn and develop fo
 
 All you need is Docker (or similarly compatible) container or a Virtual Machine environment, and Kubernetes is a single command away: minikube start
 
-#### **Installing Dependencies**
+### **Installing Dependencies**
 
 1. **Install Driver (Preferred Docker)**
 
@@ -54,16 +54,6 @@ All you need is Docker (or similarly compatible) container or a Virtual Machine 
 
    ```
 
-### Start Minikube:
-
-```
-minikube start
-```
-
-### How to Install and Use Minikube in Ubuntu
-
-Minikube is a tool that allows you to run a single-node Kubernetes cluster on your local machine. It’s an excellent tool for development and testing. Here's a step-by-step guide to install and use Minikube on Ubuntu.
-
 ### 1. **System Requirements**
 Before installing Minikube, ensure your system meets the following requirements:
 - Ubuntu 18.04 or newer.
@@ -81,14 +71,18 @@ You'll need to install some required dependencies, including:
 ### 3. **Install Minikube**
 Once you have Docker and `kubectl` set up, you can proceed to install Minikube:
 
-1. Download and install Minikube:
+1. Download Minikube:
 
    ```bash
    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+   ```
+2. Install Minikube:
+
+   ```bash
    sudo install minikube-linux-amd64 /usr/local/bin/minikube
    ```
 
-2. Verify Minikube installation:
+3. Verify Minikube installation:
 
    ```bash
    minikube version
@@ -125,7 +119,6 @@ minikube v1.34.0 on Ubuntu 22.04
 🔎  Verifying Kubernetes components...
     ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
 🌟  Enabled addons: storage-provisioner, default-storageclass
-💡  kubectl not found. If you need it, try: 'minikube kubectl -- get pods -A'
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 
 ```
@@ -226,7 +219,3 @@ minikube delete
 
 - If you encounter errors related to Docker permissions, ensure you’ve added your user to the Docker group and have logged out/logged back in.
 - If Minikube can’t find a driver, ensure the selected driver (Docker, KVM, VirtualBox) is installed and healthy.
-
----
-
-This should get you up and running with Minikube on your Ubuntu system. Let me know if you encounter any issues or need further guidance!
