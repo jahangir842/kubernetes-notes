@@ -215,59 +215,6 @@ minikube dashboard
 ```
 **Note:** Sometimes it takes time to open.
 
-#### **Deploy an Application on Minikube**
-You can deploy a simple Kubernetes application on Minikube. Here’s an example of deploying a `nginx` web server:
-
-1. Create a deployment:
-
-   ```bash
-   kubectl create deployment nginx --image=nginx
-   ```
-**Note** It will take some time depending on the size of the image.
-
-2. Check the deployments:
-
-   ```bash
-   kubectl get deployment nginx --type=NodePort --port=80
-   ```
-
-3. Check the deployments:
-
-   ```bash
-   kubectl get deployment
-   ```
-
-4. Check the pods:
-
-   ```bash
-   kubectl get deployment
-
-5. Check the logs:
-
-   ```bash
-   kubectl logs [pod name]
-   ```
-   
-6. Expose the deployment as a service:
-
-   ```bash
-   kubectl expose deployment nginx --type=NodePort --port=80
-   ```
-
-7. Access the service using Minikube's service URL:
-
-   ```bash
-   minikube service nginx
-   ```
-
-This will open your default web browser and display the running nginx service.
-
-Alternatively, use kubectl to forward the port:
-```
-kubectl port-forward service/hello-minikube 7080:80
-```
-Tada! Your application is now available at http://localhost:7080/.
-
 ### **Stop and Delete Minikube Cluster**
 
 To stop the Minikube cluster:
@@ -356,6 +303,44 @@ The `minikube image ls` command helps you view essential container images that e
   ```bash
   minikube logs
   ```
+
+### Managing Multiple Clusters with Minikube
+
+Minikube allows you to run multiple Kubernetes clusters on the same machine using **profiles**. Each profile represents a separate cluster with its own configuration (e.g., Kubernetes version, CPU, memory).
+
+#### Key Commands for Managing Multiple Clusters:
+
+- **Start a Cluster with a Profile**:  
+  You can create and start a new cluster with a specific profile name.
+  ```bash
+  minikube start -p <profile-name>
+  ```
+  Example:
+  ```bash
+  minikube start -p dev-cluster
+  ```
+
+- **Switch Between Clusters**:  
+  To switch the active profile (i.e., the cluster you want to interact with).
+  ```bash
+  minikube profile <profile-name>
+  ```
+
+- **List All Available Profiles**:  
+  View all the running and stopped clusters on your system.
+  ```bash
+  minikube profile list
+  ```
+
+- **Delete a Specific Cluster**:  
+  Remove a cluster by deleting its profile.
+  ```bash
+  minikube delete -p <profile-name>
+  ```
+
+#### Use Case:  
+Using multiple clusters is helpful when you need different environments (e.g., development, testing) or want to test different Kubernetes versions without interfering with your main cluster.
+
 
 ### Troubleshooting
 
