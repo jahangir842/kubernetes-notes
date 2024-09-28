@@ -8,14 +8,12 @@ minikube is local Kubernetes, focusing on making it easy to learn and develop fo
 
 All you need is Docker (or similarly compatible) container or a Virtual Machine environment, and Kubernetes is a single command away: minikube start
 
-```
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
-```
-
 #### **Installing Dependencies**
 
-1. **Install Docker (Preferred Driver)**
+1. **Install Driver (Preferred Docker)**
+
+   See the drivers page for help setting up a compatible container or virtual-machine manager. (https://minikube.sigs.k8s.io/docs/drivers/)
+
    Minikube works well with Docker as a driver. Install Docker using the following commands:
 
    ```bash
@@ -61,14 +59,6 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-a
 ```
 minikube start
 ```
-
-
-
-### If Fails to Start:
-
-If minikube fails to start, see the drivers page for help setting up a compatible container or virtual-machine manager.
-
-(https://minikube.sigs.k8s.io/docs/drivers/)
 
 ### How to Install and Use Minikube in Ubuntu
 
