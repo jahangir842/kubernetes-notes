@@ -4,6 +4,8 @@
 
 **Official Docs:** https://minikube.sigs.k8s.io/docs/
 
+**Minikube Commands:** https://minikube.sigs.k8s.io/docs/commands/
+
 **Tutorial with Nana:** https://www.youtube.com/watch?v=X48VuDVv0do
 
 minikube is local Kubernetes, focusing on making it easy to learn and develop for Kubernetes.
