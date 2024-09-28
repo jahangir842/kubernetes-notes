@@ -198,7 +198,61 @@ To delete the Minikube cluster:
 minikube delete
 ```
 
-### 7. **Additional Minikube Commands**
+###  7. Show Default Images
+
+The `minikube image ls` command lists the container images currently available in your Minikube cluster. 
+
+#### Why These Images Are Available After Installation
+
+1. **Default Components**: Minikube includes essential Kubernetes components (API server, scheduler, controller manager) to create a functional cluster.
+
+2. **Pod Management**: The `pause` container manages pod lifecycles and holds network namespaces.
+
+3. **Service Discovery**: CoreDNS provides DNS services for inter-service communication within the cluster.
+
+4. **Persistent Storage**: The storage provisioner handles dynamic volume provisioning for applications.
+
+5. **Monitoring**: Metrics scraper and dashboard images enable monitoring and management through a web interface.
+
+6. **Simplified Setup**: Bundling these images allows for a quick and efficient setup, enabling users to start using Kubernetes without manual configuration.
+
+The `minikube image ls` command helps you view essential container images that ensure your Minikube cluster is ready to manage Kubernetes workloads effectively.
+
+These are the default Images:
+
+1. **`registry.k8s.io/pause:3.10`**
+   - Placeholder container for managing pod lifecycles (holds network namespace).
+
+2. **`registry.k8s.io/kube-scheduler:v1.31.0`**
+   - Responsible for assigning pods to nodes based on resource availability.
+
+3. **`registry.k8s.io/kube-proxy:v1.31.0`**
+   - Manages network rules and communication between pods and external services.
+
+4. **`registry.k8s.io/kube-controller-manager:v1.31.0`**
+   - Runs controllers for routine tasks like replication and scaling.
+
+5. **`registry.k8s.io/kube-apiserver:v1.31.0`**
+   - Hosts the API server, central management interface for the cluster.
+
+6. **`registry.k8s.io/etcd:3.5.15-0`**
+   - Distributed key-value store for cluster configuration and state.
+
+7. **`registry.k8s.io/coredns/coredns:v1.11.1`**
+   - DNS server for service discovery within the cluster.
+
+8. **`gcr.io/k8s-minikube/storage-provisioner:v5`**
+   - Manages dynamic volume provisioning for persistent storage in Minikube.
+
+9. **`docker.io/kubernetesui/metrics-scraper:<none>`**
+   - Collects metrics from the cluster (tag unspecified).
+
+10. **`docker.io/kubernetesui/dashboard:<none>`**
+    - Web-based interface for managing and monitoring Kubernetes resources (tag unspecified).
+
+These images are crucial for the functionality and management of a Minikube Kubernetes cluster, handling core operations, networking, and service discovery.
+
+### 8. **Additional Minikube Commands**
 
 - **Check Minikube IP**:
   ```bash
