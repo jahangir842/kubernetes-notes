@@ -19,7 +19,13 @@ Minikube automatically configures `kubectl` to work with your local Kubernetes c
 kubectl cluster-info
 ```
 
-This will show details about the Kubernetes cluster and confirm that `kubectl` is configured correctly.
+This will show details about the Kubernetes cluster and confirm that `kubectl` is configured correctly. like:
+```
+Kubernetes control plane is running at https://192.168.49.2:8443
+CoreDNS is running at https://192.168.49.2:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
 
 #### 3. **Basic `kubectl` Commands**
 
