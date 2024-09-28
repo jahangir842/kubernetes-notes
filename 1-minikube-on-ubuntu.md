@@ -171,6 +171,7 @@ Minikube provides a built-in Kubernetes dashboard to visualize cluster activitie
 ```bash
 minikube dashboard
 ```
+**Note:** Sometimes it takes time to open.
 
 #### **Deploy an Application on Minikube**
 You can deploy a simple Kubernetes application on Minikube. Here’s an example of deploying a `nginx` web server:
