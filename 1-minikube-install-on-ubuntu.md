@@ -196,17 +196,6 @@ minikube v1.34.0 on Ubuntu 22.04
 
 ---
 
-## Use Minikube
-
-#### **Check Cluster Status**
-You can check your Minikube Kubernetes cluster using `kubectl`:
-
-```bash
-kubectl get nodes
-```
-
-This will show the Minikube node running as part of the cluster.
-
 #### **Open the Minikube Dashboard** (Optional)
 Minikube provides a built-in Kubernetes dashboard to visualize cluster activities. You can access it by running:
 
