@@ -181,13 +181,38 @@ You can deploy a simple Kubernetes application on Minikube. Here’s an example 
    kubectl create deployment nginx --image=nginx
    ```
 
-2. Expose the deployment as a service:
+
+2. Check the deployments:
+
+   ```bash
+   kubectl get deployment nginx --type=NodePort --port=80
+   ```
+
+3. Check the deployments:
+
+   ```bash
+   kubectl get deployment
+   ```
+
+
+4. Check the pods:
+
+   ```bash
+   kubectl get deployment
+
+5. Check the logs:
+
+   ```bash
+   kubectl logs [pod name]
+   ```
+   
+6. Expose the deployment as a service:
 
    ```bash
    kubectl expose deployment nginx --type=NodePort --port=80
    ```
 
-3. Access the service using Minikube's service URL:
+7. Access the service using Minikube's service URL:
 
    ```bash
    minikube service nginx
