@@ -180,7 +180,7 @@ You can deploy a simple Kubernetes application on Minikube. Here’s an example 
    ```bash
    kubectl create deployment nginx --image=nginx
    ```
-
+**Note** It will take some time depending on the size of the image.
 
 2. Check the deployments:
 
