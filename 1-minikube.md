@@ -13,7 +13,21 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 ```
 
-Start Minikube:
+### Install Docker
+
+https://github.com/jahangir842/docker-notes/blob/main/1.docker-installation/docker-install-online.md?plain=1
+
+### Fix Docker Permissions: If error
+
+If user does not have the necessary permissions to run Docker commands. Follow these steps to add your user to the Docker group:
+
+```
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+### Start Minikube:
+
 ```
 minikube start
 ```
