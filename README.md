@@ -10,6 +10,49 @@ The evolution of Kubernetes started from **Borg**, Google's very own distributed
 
 **Cloud Native Computing Foundation (CNCF)** currently hosts the Kubernetes project, along with other popular cloud native projects, such as Argo, Cilium, Prometheus, Fluentd, etcd, CoreDNS, cri-o, containerd, Helm, Envoy, Istio, and Linkerd, just to name a few.
 
+---
+
+### What Is Kubernetes?
+
+According to the Kubernetes website,
+
+`Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications`
+
+Kubernetes comes from the Greek word κυβερνήτης, which means **helmsman** or **ship pilot**. With this analogy in mind, we can think of Kubernetes as the pilot on a ship of containers.
+
+Kubernetes is also referred to as **k8s** (pronounced Kate's), as there are 8 characters between k and s.
+
+Kubernetes is highly inspired by the **Google Borg** system, a container and workload orchestrator for its global operations, Google has been using for more than a decade. It is an open source project written in the **Go** language and licensed under the License, Version 2.0.
+
+Kubernetes was started by Google and, with its v1.0 release in July 2015, Google **donated** it to the Cloud Native Computing Foundation (CNCF), one of the largest **sub-foundations** of the **Linux Foundation**.
+
+New Kubernetes versions are released in 4 month cycles. The current stable version is 1.29 (as of December 2023). https://kubernetes.io/releases/
+
+---
+
+## Key Kubernetes Features
+
+Kubernetes offers a comprehensive set of container orchestration features:
+
+- **Automatic bin packing**: Efficiently schedules containers based on resource needs to maximize utilization.
+- **Extensibility**: Add custom features without altering the Kubernetes source code.
+- **Self-healing**: Automatically restarts failed containers, replaces unresponsive ones, and reroutes traffic accordingly.
+- **Horizontal scaling**: Manually or automatically scales applications based on CPU or custom metrics.
+- **Service discovery & load balancing**: Provides IPs and DNS names to load-balance requests across containers.
+
+Additional features include:
+
+- **Automated rollouts/rollbacks**: Seamlessly handles updates and rollbacks while monitoring application health.
+- **Secret & configuration management**: Separates sensitive data and configurations from container images.
+- **Storage orchestration**: Automates storage management from various sources, including local and cloud.
+- **Batch execution**: Supports long-running jobs and manages failed containers.
+- **IPv4/IPv6 dual-stack**: Enables both IPv4 and IPv6 support.
+
+Kubernetes also supports common PaaS features like deployment, scaling, and load balancing while allowing custom monitoring, logging, and alerting solutions through plugins. 
+
+New features, such as **RBAC** and **CronJobs**, are continuously being stabilized in newer releases.
+
+---
 
 ## Container Orchestrators
 
@@ -43,8 +86,6 @@ Below is a list of popular container orchestration tools and services available 
 
 7. **Docker Swarm**  
    - A native container orchestrator built into Docker Engine, enabling clustering and scaling of Docker containers.
-
-For a deeper dive into container orchestrators, check out the edX course: **"Introduction to Cloud Infrastructure Technologies" (LFS151x)**, which further explores these tools.
 
 ---
 
