@@ -2,9 +2,14 @@ In Kubernetes, a configuration file typically consists of three key parts: **met
 
 1. **metadata**: Provides information about the object, such as its name, namespace, labels, and annotations. It helps identify and manage resources.
    
-2. **spec**: Defines the desired state of the object. It includes the configuration settings like the number of replicas, container images, ports, and other desired behaviors.
+2. **spec**: Defines the desired state of the object. It includes the configuration settings like the number of replicas, container images, ports, and other desired behaviours.
 
-3. **status**: Reflects the current state of the object as observed by the Kubernetes control plane. It’s managed by the system and updates automatically based on what’s happening in the cluster.
+3. **status**:
+   - **status** reflects the current state of the object as seen by the Kubernetes control plane.
+   - It is automatically managed and updated by Kubernetes based on real-time events in the cluster.
+   - The data in the **status** section comes from **etcd**, the central data store (often called the "brain" of the cluster) located in the master node.
+   - **etcd** stores both the desired and current states of all components in the cluster.
+   - It plays a crucial role in Kubernetes' self-healing by constantly comparing the desired state with the actual state and taking corrective actions when needed.
 
 Here’s an example of a full Nginx **Deployment** configuration file that includes the three parts: **metadata**, **spec**, and **status**.
 
@@ -30,10 +35,14 @@ spec:
         image: nginx:latest  # Nginx container image
         ports:
         - containerPort: 80  # Exposed port inside the container
+status:
+  replicas: 3  # The current number of replicas in the cluster
+  readyReplicas: 3  # Number of replicas currently running and ready
+  availableReplicas: 3  # Number of replicas available for service
 ```
 
 ### Explanation:
-1. **metadata**: Includes the name `nginx-deployment` and a label `app: nginx`. This metadata helps identify and organize the deployment.
+1. **metadata**: Includes the name `nginx-deployment` and the label `app: nginx`. This metadata helps identify and organize the deployment.
    
 2. **spec**:
    - Defines the desired state:
