@@ -94,3 +94,23 @@ The **selector** in Kubernetes is a crucial component that enables communication
 - **Scalability and Flexibility**: Selectors enhance application scalability and flexibility, allowing for easy traffic management without changing the application architecture.
 
 In essence, the **selector** is vital for directing traffic to the correct Pods, enabling dynamic service discovery, and improving the resilience and scalability of applications within the Kubernetes environment.
+
+### Config File Organization
+
+- **Separate Config Files**: 
+  - Maintain distinct files for **Deployment** and **Service** to promote modularity and clarity.
+
+- **Directory Structure**: 
+  - Organize files in a dedicated folder, e.g.:
+    ```
+    k8s/
+    ├── deployment.yaml
+    └── service.yaml
+    ```
+
+- **Easier Updates**: 
+  - Simplify updates by modifying only the relevant file, reducing error risks.
+
+- **Reusability**: 
+  - Facilitate reuse across environments (development, staging, production) without duplication.
+
