@@ -67,7 +67,15 @@ Anything underneath a deployment (such as Pods, Replicasets, etc.) is managed au
   ```bash
   kubectl get services
   ```
+### What is Service: 
+Service is a method for exposing a network application that is running as one or more Pods in your cluster.
+Each Service object defines a logical set of endpoints (usually these endpoints are Pods) along with a policy about how to make those pods accessible.
 
+**More Info:** 
+- https://kubernetes.io/docs/concepts/services-networking/service/
+- https://kubernetes.io/docs/tutorials/services/connect-applications-service/
+
+  
 - **Get Detailed Pod Information**:
   To get detailed information about a specific pod, including its configuration, status, and events:
   ```bash
