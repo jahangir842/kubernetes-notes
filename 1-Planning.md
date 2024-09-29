@@ -141,31 +141,31 @@ For more details, explore the [Kubernetes documentation](https://kubernetes.io/d
 
 To install and use a local Kubernetes cluster for learning, development, and experimentation, you have several popular tools to choose from. Here's an overview of each:
 
-1. **Minikube**: 
+1. **Minikube**: https://minikube.sigs.k8s.io/docs/
    - A versatile and simple option for deploying both single- and multi-node clusters on your local machine.
    - Ideal for learning environments because of its simplicity and extensive automation features.
    - Suitable for deploying on a single host, it allows you to quickly set up a local Kubernetes environment.
 
-2. **Kind** (Kubernetes IN Docker): 
+2. **Kind** (Kubernetes IN Docker): https://kind.sigs.k8s.io/ 
    - Deploys multi-node clusters within Docker containers.
    - Each Docker container acts as a separate Kubernetes node, making it perfect for testing multi-node configurations locally.
    - Great for development environments, especially if you're familiar with Docker.
 
-3. **Docker Desktop**: 
+3. **Docker Desktop**: https://www.docker.com/products/docker-desktop/
    - Includes built-in Kubernetes integration.
    - A good choice for users already working with Docker who want a simple Kubernetes setup without needing to install additional tools.
    - The integration makes it easy to switch between Docker and Kubernetes workflows.
 
-4. **Podman Desktop**: 
+4. **Podman Desktop**: https://podman-desktop.io/
    - Offers Kubernetes integration for those using Podman instead of Docker.
    - Podman is a container runtime that is similar to Docker but daemonless, allowing you to run containers without root privileges.
 
-5. **MicroK8s**: 
+5. **MicroK8s**: https://microk8s.io/
    - Developed by Canonical (Ubuntu's makers), MicroK8s provides a powerful, yet easy-to-use solution for both local development and production environments.
    - It can scale from single-node local setups to multi-node clusters in the cloud.
    - Good for developers who might eventually want to transition their local setup into a production-ready system.
 
-6. **K3S**: 
+6. **K3S**: https://k3s.io/
    - A lightweight Kubernetes distribution designed for edge computing, IoT, and low-resource environments.
    - Originally developed by Rancher, now part of the CNCF (Cloud Native Computing Foundation).
    - Great for lightweight setups or when deploying Kubernetes in constrained environments.
