@@ -20,35 +20,92 @@ In Kubernetes, a configuration file typically consists of three key parts: **met
    - **etcd** stores both the desired and current states of all components in the cluster.
    - It plays a crucial role in Kubernetes' self-healing by constantly comparing the desired state with the actual state and taking corrective actions when needed.
 
-Here’s an example of a full Nginx **Deployment** configuration file that includes the three parts: **metadata**, **spec**, and **status**.
+---
+
+## Example:
+
+Here are two separate YAML configuration files for deploying Nginx in Kubernetes: 
+
+One for the **Deployment** and another for the **Service**.
+
+### 1. Deployment Configuration (`nginx-deployment.yaml`)
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment  # Name of the deployment
-  labels:
-    app: nginx  # Labels to categorize the deployment
+  name: nginx
 spec:
-  replicas: 3  # Number of pod replicas to run
+  replicas: 2
   selector:
     matchLabels:
       app: nginx
   template:
     metadata:
       labels:
-        app: nginx  # Labels for the pods
+        app: nginx
     spec:
       containers:
       - name: nginx
-        image: nginx:latest  # Nginx container image
+        image: nginx:latest
         ports:
-        - containerPort: 80  # Exposed port inside the container
-status:
-  replicas: 3  # The current number of replicas in the cluster
-  readyReplicas: 3  # Number of replicas currently running and ready
-  availableReplicas: 3  # Number of replicas available for service
+        - containerPort: 80
 ```
+
+### 2. Service Configuration (`nginx-service.yaml`)
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
+```
+
+### Instructions for Deployment
+
+**Deploy the Nginx Application**:
+   - Run the following commands to apply both configuration files:
+
+   ```bash
+   kubectl apply -f nginx-deployment.yaml
+   kubectl apply -f nginx-service.yaml
+   ```
+
+**Verify the Deployment**:
+   - Check the status of the Deployment:
+
+   ```bash
+   kubectl get deployments
+   ```
+
+   - Check the status of the Service:
+
+   ```bash
+   kubectl get services
+   ```
+
+### Instructions for Deletion
+
+To delete the Deployment and Service, use the following commands:
+
+```bash
+kubectl delete -f nginx-deployment.yaml
+kubectl delete -f nginx-service.yaml
+```
+
+### Summary
+
+- **Deployment File**: Defines how to run Nginx Pods.
+- **Service File**: Exposes the Nginx Pods for network access.
+- Use `kubectl apply -f <filename>` to deploy and `kubectl delete -f <filename>` to remove the resources.  
+ 
 
 ### Explanation:
 1. **metadata**: Includes the name `nginx-deployment` and the label `app: nginx`. This metadata helps identify and organize the deployment.
