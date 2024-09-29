@@ -92,7 +92,6 @@ Kubernetes also integrates common Platform as a Service (PaaS) features such as 
 
 Additionally, many Kubernetes features evolve through alpha or beta phases, such as stable support for **Role-Based Access Control (RBAC)** since version 1.8 and **cronjobs** since version 1.21. These features bring even more value as they mature in stability.
 
-
 ---
 
 #### Why Use Kubernetes?
@@ -455,4 +454,118 @@ If you want to run Kubernetes in production without relying on cloud providers, 
 If you prefer **self-managed** Kubernetes environments without cloud dependencies, the best choices include **Kubeadm**, **Rancher**, **K3s**, or **MicroK8s**. For large, enterprise-level setups, consider **OpenShift (OKD)** or **Tanzu Kubernetes Grid**. For complete control and performance, **Bare Metal Kubernetes** or **Kuberspray** are great options.
 
 Each solution offers a different level of complexity and feature set depending on your production needs.
+
+---
+
+## Control Plane Node
+
+- **Function**: The control plane node is the central management component of a Kubernetes cluster, overseeing its operational state.
+  
+- **Communication**: Users interact with the control plane using:
+  - Command Line Interface (CLI)
+  - Web User Interface (Web UI)
+  - Application Programming Interface (API)
+
+- **Importance**: Maintaining a functional control plane is critical to avoid downtime and service disruption, which can lead to business losses.
+
+- **High Availability (HA)**: 
+  - Control plane replicas can be added for fault tolerance.
+  - Only one node actively manages the cluster, but all nodes remain in sync.
+
+- **State Persistence**: Cluster configuration data is stored in a distributed key-value store, which is separate from client workload data.
+
+- **Key-Value Store Configurations**:
+  - **Stacked Topology**: The key-value store is hosted on the control plane node, benefiting from HA of control plane replicas.
+  - **External Topology**: The key-value store is hosted separately, requiring its own HA setup, which increases operational costs.
+
+A control plane node hosts several essential components and agents, including the 
+
+- API server
+- scheduler
+- controller managers
+- key-value data store.
+
+Additionally, it runs:
+- Container runtime
+- Node agent (kubelet)
+- Proxy (kube-proxy)
+- Optional observability add-ons, such as:
+  - Dashboard
+  - Cluster-level monitoring
+  - Logging tools
+
+### API Server:
+
+The **kube-apiserver** is a central control plane component responsible for coordinating all administrative tasks within a Kubernetes cluster. Here’s a concise overview of its functions:
+
+- **Request Handling:** The API Server intercepts RESTful calls from users, administrators, developers, operators, and external agents, validating and processing these requests.
+
+- **State Management:** It reads the current state of the Kubernetes cluster from a key-value store. After executing a call, the resulting state is saved back to the key-value store for persistence.
+
+- **Single Point of Interaction:** The API Server is the only control plane component that interacts directly with the key-value store, serving as the intermediary for other control plane agents querying the cluster's state.
+
+- **Configurability:** It is highly configurable and can be customized to suit specific needs.
+
+- **Scalability:** The API Server can scale horizontally and supports the addition of custom secondary API Servers. In this setup, the primary API Server acts as a proxy, routing incoming RESTful calls to the appropriate secondary API Servers based on custom-defined rules.
+
+### Scheduler:
+
+The **kube-scheduler** assigns new workloads, such as pods, to nodes based on the Kubernetes cluster's state and workload requirements. Key functions include:
+
+- **Workload Assignment:** Assigns pods to worker nodes by evaluating resource usage and workload constraints.
+  
+- **Decision Factors:** Considers Quality of Service (QoS), data locality, affinity/anti-affinity rules, taints, tolerations, and cluster topology.
+
+- **Scheduling Algorithm:** Filters potential node candidates and scores them to determine the best fit for the workload.
+
+- **Communication:** Reports decisions back to the API Server for deployment coordination.
+
+- **Configurability:** Highly configurable through scheduling policies and supports custom schedulers.
+
+- **Complexity:** More complex in multi-node clusters; simpler in single-node setups for learning and development.
+
+### Controller Managers:
+
+**Controller managers** are key components of the control plane that ensure the Kubernetes cluster maintains its desired state. Here’s how they function:
+
+- **Watch-Loop Process:** Continuously compares the desired state (from configuration data) with the current state (from the key-value store via the API Server).
+
+- **Corrective Actions:** Takes action to rectify any discrepancies between the desired and current states.
+
+- **Kube-Controller-Manager:** 
+  - Manages node availability.
+  - Maintains expected pod counts.
+  - Creates endpoints, service accounts, and API access tokens.
+
+- **Cloud-Controller-Manager:**
+  - Interacts with cloud provider infrastructure.
+  - Manages storage volumes provided by cloud services.
+  - Oversees load balancing and routing.
+
+Together, these managers ensure the Kubernetes cluster operates effectively and meets defined configurations.
+
+### Key-Value Data Store (etcd)
+
+**etcd** is an open-source, distributed key-value data store under the Cloud Native Computing Foundation (CNCF), essential for persisting the state of a Kubernetes cluster. Here are the key points about etcd:
+
+- **Data Management:**
+  - Data is appended, never replaced, and obsolete data is periodically compacted to reduce size.
+  - Only the API Server communicates with the etcd data store.
+
+- **Management Tool:** 
+  - The CLI tool **etcdctl** offers snapshot save and restore capabilities, useful for single-instance clusters in development.
+
+- **High Availability (HA):**
+  - In production environments, etcd should be replicated in HA mode for data resiliency.
+  - Supports both **stacked** (running on the same control plane node) and **external** topologies (isolated on a separate host).
+
+- **Raft Consensus Algorithm:** 
+  - Ensures that a group of machines can function cohesively and tolerate node failures, including leader node failures.
+  - One node acts as the leader while others are followers; leader elections are handled gracefully.
+
+- **Usage:** 
+  - Besides cluster state, etcd stores configuration details like subnets, ConfigMaps, and Secrets.
+
+By utilizing etcd, Kubernetes ensures a reliable and consistent state management system for the cluster.
+
 
