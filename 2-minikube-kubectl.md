@@ -111,7 +111,11 @@ You can deploy applications in Kubernetes by creating a **deployment**. A deploy
 
 ### get pod in detail:
 
-The command `kubectl get pod -o wide` is used in Kubernetes to retrieve detailed information about the Pods in a specific namespace or in the current context.
+The following command is used in Kubernetes to retrieve detailed information about the Pods in a specific namespace or in the current context.
+
+```
+kubectl get pod -o wide`
+```
 
   - **`-o wide`**: This flag changes the output format to include additional details, such as:
   - **Node**: The node on which the Pod is running.
