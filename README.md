@@ -4,6 +4,12 @@ Explore the Cloud Native Computing Foundation (CNCF) landscape:
 [https://landscape.cncf.io](https://landscape.cncf.io/)
 
 ---
+## Roots of Kubernetes
+
+The evolution of Kubernetes started from **Borg**, Google's very own distributed workload manager.
+
+**Cloud Native Computing Foundation (CNCF)** currently hosts the Kubernetes project, along with other popular cloud native projects, such as Argo, Cilium, Prometheus, Fluentd, etcd, CoreDNS, cri-o, containerd, Helm, Envoy, Istio, and Linkerd, just to name a few.
+
 
 ## Container Orchestrators
 
@@ -42,7 +48,7 @@ For a deeper dive into container orchestrators, check out the edX course: **"Int
 
 ---
 
-## Kubernetes cloud solutions
+## Kubernetes Cloud Solutions
 
 If you're considering **Kubernetes cloud solutions**, several managed services are available that take care of infrastructure management, scaling, and operations, allowing you to focus on deploying and managing your applications. Here's a breakdown of the major **cloud-based Kubernetes solutions**:
 
