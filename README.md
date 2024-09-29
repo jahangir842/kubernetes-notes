@@ -38,7 +38,7 @@ Kubernetes offers a comprehensive set of container orchestration features:
 - **Extensibility**: Add custom features without altering the Kubernetes source code.
 - **Self-healing**: Automatically restarts failed containers, replaces unresponsive ones, and reroutes traffic accordingly.
 - **Horizontal scaling**: Manually or automatically scales applications based on CPU or custom metrics.
-- **Service discovery & load balancing**: Provides IPs and DNS names to load-balance requests across containers.
+- **Service discovery & load balancing**: Provides IPs and DNS names to load-balance requests across containers. Containers receive IP addresses from Kubernetes, while it assigns a single Domain Name System (DNS) name to a set of containers to aid in load-balancing requests across the containers of the set.
 
 Additional features include:
 
