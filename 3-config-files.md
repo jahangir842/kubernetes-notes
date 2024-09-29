@@ -63,6 +63,23 @@ status:
 
 This configuration file ensures that Kubernetes maintains 3 Nginx replicas and exposes them on port 80. The **status** section reflects the runtime conditions but doesn't need to be manually included in the deployment file; Kubernetes will update it dynamically.
 
+### View Status:
+To view the status and details of a specific Kubernetes Deployment (in this case, named **nginx**) in YAML format, you can use the following command:
+
+```bash
+kubectl get deployment nginx -o yaml
+```
+- **`-o yaml`**: This option formats the output in YAML, which provides a structured view of the resource's configuration and status.
+
+We can save it in a file too.
+```bash
+kubectl get deployment nginx -o yaml >> nginx-depl-result.yaml
+```
+
+- It provides a comprehensive view of the **nginx** Deployment
+- Allowing to monitor its status and configuration details in a structured format. 
+- Useful for troubleshooting and understanding the current state of your Kubernetes resources.
+
 ### Template
 
 In the Kubernetes configuration file, the **template** section is a nested configuration within the **Deployment** specification. It defines the **Pod** specification and serves as a blueprint for the Pods. Here’s a breakdown:
