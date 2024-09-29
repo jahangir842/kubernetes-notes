@@ -29,6 +29,19 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 - The **control plane** is responsible for managing the Kubernetes cluster and is accessible via the API server.
 - **CoreDNS** provides DNS resolution for services in the cluster, allowing pods to communicate using service names instead of IP addresses. It's running within the kube-system namespace and accessible via a proxy URL.
 
+
+
+### CRUD Operations at the Deployment Level
+
+In Kubernetes, CRUD (Create, Read, Update, Delete) operations primarily occur at the **Deployment** level. A **Deployment** defines the desired state for your application, such as the number of replicas and the container images used.
+
+- **Create**: A deployment is created using YAML or a CLI command (`kubectl apply -f deployment.yaml`), defining the pods and containers Kubernetes should manage.
+- **Read**: You can inspect the status of a deployment using `kubectl get deployments` or `kubectl describe deployment`.
+- **Update**: Updates to a deployment, like changing container images or scaling replicas, are handled with `kubectl apply` or `kubectl set image`, and Kubernetes automatically applies the changes to the underlying resources (like Pods).
+- **Delete**: When a deployment is deleted using `kubectl delete`, Kubernetes automatically removes the underlying Pods and resources.
+
+Anything underneath a deployment (such as Pods, Replicasets, etc.) is managed automatically by Kubernetes as specified in the deployment.
+
 #### 3. **Basic `kubectl` Commands**
 
 - **Check Nodes in the Cluster**:
