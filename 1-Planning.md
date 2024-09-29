@@ -363,3 +363,64 @@ Turnkey solutions provide production-ready Kubernetes clusters on cloud infrastr
 With over 200 certified Kubernetes service providers today, organizations have a wealth of options for deploying and managing Kubernetes clusters. Whether through fully managed hosted solutions, consulting and management partners, or turnkey cloud deployments, these solutions offer varying levels of automation, scalability, and customization to meet the needs of enterprises, startups, and developers alike.
 
 Choosing the right solution will depend on factors such as cloud preference, desired level of control, infrastructure complexity, and specific business requirements.
+
+---
+
+## Windows Support in Kubernetes
+
+Kubernetes support for Windows plays a crucial role in managing enterprise applications, many of which rely heavily on the Windows ecosystem. Recognizing the importance of Windows, the Kubernetes community has worked to integrate Windows as a supported platform for Kubernetes worker nodes.
+
+### Key Aspects of Windows Support in Kubernetes
+
+1. **Windows Worker Nodes**:
+   - As of Kubernetes v1.14, Windows is supported as a production-ready operating system, but only for **worker nodes**.
+   - This allows Windows containers to be deployed and managed within a Kubernetes cluster, making Kubernetes a versatile platform for running mixed workloads in enterprise environments.
+   - The Kubernetes control plane (master nodes) remains **Linux-only**, with no plans to extend support to Windows for control plane nodes.
+
+2. **Hybrid Clusters**:
+   - Kubernetes enables the deployment of hybrid clusters, where **Linux and Windows worker nodes** coexist.
+   - This allows the same Kubernetes cluster to manage both **Linux and Windows containers**. However, it’s essential to properly configure scheduling rules to ensure workloads are deployed on the correct operating system. For instance:
+     - Linux containers should be scheduled on **Linux nodes**.
+     - Windows containers should be scheduled on **Windows nodes**.
+
+3. **Supported Windows Versions**:
+   - Kubernetes officially supports **Windows Server 2019** and **Windows Server 2022** as the only versions for running Windows containers within a Kubernetes cluster.
+   - These versions provide the necessary container features and compatibility required for integrating Windows workloads with Kubernetes.
+
+### Managing Windows Containers in Kubernetes
+
+When running a Kubernetes cluster with Windows worker nodes, the following practices and considerations are important:
+
+- **Node Configuration**: Both Linux and Windows nodes can coexist in a Kubernetes cluster, but they must be correctly labeled to ensure workloads are scheduled appropriately.
+- **Pod Scheduling**: Kubernetes allows you to define **node selectors** or use **taints and tolerations** to control which nodes (Windows or Linux) specific workloads are deployed to. This is important when managing a mixed environment, where different containers require different operating systems.
+  
+  For example, a deployment manifest for a Windows container might look like this:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: windows-app
+  spec:
+    template:
+      spec:
+        nodeSelector:
+          kubernetes.io/os: windows
+        containers:
+        - name: windows-app
+          image: mcr.microsoft.com/windows/servercore:ltsc2022
+  ```
+
+- **Networking and Storage**: Windows worker nodes rely on the same Kubernetes network model used by Linux nodes, but there are some Windows-specific networking features and storage options to be aware of, such as the use of **Windows HNS** (Host Networking Service) for container networking.
+
+### Use Cases for Windows in Kubernetes
+
+- **Enterprise Applications**: Many enterprises run legacy and modern applications on Windows. Windows worker node support in Kubernetes allows these organizations to containerize and orchestrate their Windows-based applications within the same Kubernetes environment they use for Linux.
+- **Hybrid Workloads**: For organizations running both Windows and Linux applications, hybrid clusters enable streamlined management, scaling, and orchestration of workloads across different operating systems.
+- **Containerized .NET Applications**: Kubernetes is especially useful for deploying .NET applications, allowing organizations to take advantage of containerization without migrating their application stack from Windows.
+
+### Limitations
+
+- **Control Plane Restriction**: The Kubernetes control plane (which includes the API server, scheduler, and controller manager) is still limited to **Linux-only nodes**. Windows support is confined to worker nodes, which means Linux nodes are still essential for running the cluster's control plane components.
+- **Ecosystem Integration**: While Kubernetes supports Windows containers, the wider ecosystem (such as networking plugins, storage systems, and observability tools) may have varying levels of support for Windows worker nodes, so additional considerations may be required.
+
+With Windows support in Kubernetes, organizations can now run both **Windows** and **Linux** workloads in the same Kubernetes cluster, providing a unified platform for container orchestration. This hybrid model allows enterprises to benefit from Kubernetes’ scalability and automation capabilities while maintaining their existing Windows-based applications. However, due to limitations like Linux-only control planes and certain tooling differences, careful planning and configuration are needed when deploying Windows nodes in Kubernetes environments.
