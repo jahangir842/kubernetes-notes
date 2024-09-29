@@ -1,3 +1,12 @@
+A Kubernetes configuration file typically consists of two sections: **Deployment** and **Service**. It uses **YAML** format, which is:
+
+- Human-friendly data serialization standard that is compatible with all programming languages.
+- **YAML** requires strict indentation for proper structure and readability.
+- The configuration file is stored as part of the code repository.
+- YAML files can be verified using **online YAML validators** to ensure correctness.
+- Most modern **code editors** support YAML syntax validation through plugins, helping to catch indentation and syntax errors. 
+
+This ensures the YAML files used in Kubernetes deployments are easy to read and reliable across environments.
 In Kubernetes, a configuration file typically consists of three key parts: **metadata**, **spec**, and **status**. Here’s a breakdown of these sections:
 
 1. **metadata**: Provides information about the object, such as its name, namespace, labels, and annotations. It helps identify and manage resources.
