@@ -1,5 +1,3 @@
-# Kubernetes Notes
-
 ## CNCF Landscape
 
 Explore the Cloud Native Computing Foundation (CNCF) landscape:  
@@ -7,7 +5,7 @@ Explore the Cloud Native Computing Foundation (CNCF) landscape:
 
 ---
 
-## Introduction
+## Container Orchestrators
 
 Most container orchestrators can be deployed on the infrastructure of our choice - on bare metal, Virtual Machines, on-premises, on public and hybrid clouds. Kubernetes, for example, can be deployed on a workstation, with or without an isolation layer such as a local hypervisor or container runtime, inside a company's data center, in the cloud on AWS Elastic Compute Cloud (EC2) instances, Google Compute Engine (GCE) VMs, DigitalOcean Droplets, IBM Virtual Servers, OpenStack, etc.
 
