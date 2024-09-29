@@ -107,6 +107,26 @@ You can deploy applications in Kubernetes by creating a **deployment**. A deploy
   minikube service nginx-app --url
   ```
 
+
+
+### get pod in detail:
+
+The command `kubectl get pod -o wide` is used in Kubernetes to retrieve detailed information about the Pods in a specific namespace or in the current context.
+
+  - **`-o wide`**: This flag changes the output format to include additional details, such as:
+  - **Node**: The node on which the Pod is running.
+  - **IP Address**: The Pod's IP address.
+  - **Container Status**: Status of the containers within the Pod, including the number of restarts.
+  - **Container Images**: The images used by the containers in the Pod.
+
+The output might look like this:
+
+```
+NAME            READY   STATUS    RESTARTS   AGE     IP            NODE
+nginx-pod      1/1     Running   0          5m      10.244.1.5    worker-node-1
+app-pod        1/1     Running   2          10m     10.244.1.6    worker-node-2
+```
+
 #### 5. **Scaling the Application**
 Kubernetes allows you to scale your application easily by increasing or decreasing the number of pods in a deployment.
 
