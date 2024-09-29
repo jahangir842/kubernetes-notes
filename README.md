@@ -1,9 +1,41 @@
+## Cloud Native Computing Foundation (CNCF)
+
+- **Cloud Native Computing Foundation (CNCF)**: A major project under the Linux Foundation, CNCF accelerates the adoption of containers, microservices, and cloud-native apps.
+
+- **Project Categories**: Projects are categorized by maturity levels—**Sandbox**, **Incubating**, and **Graduated**. Over a dozen projects have achieved Graduated status, including **Kubernetes**, **Helm**, and **Prometheus**.
+
+- **Popular Graduated Projects**: Examples include **Kubernetes**, **Argo**, **CoreDNS**, **Fluentd**, **Linkerd**, and **Envoy**.
+
+- **Key Incubating Projects**: Notable incubating projects include **Buildpacks.io**, **Knative**, **KubeVirt**, and **Contour**.
+
+- **Dynamic Sandbox Projects**: New projects in areas like metrics, monitoring, and serverless are progressing toward higher maturity levels, while some, like **rkt** and **Brigade**, have been archived.
+
+- **Full Lifecycle Support**: CNCF projects cover the entire cloud-native app lifecycle, from container runtimes to monitoring and logging.
+
+---
+
+## CNCF and Kubernetes
+
+The Cloud Native Computing Foundation (CNCF) supports Kubernetes in several key ways:
+
+- Provides a neutral home for the Kubernetes trademark and ensures proper usage.
+- Conducts license scanning for both core and vendor code.
+- Offers legal guidance on patent and copyright matters.
+- Develops and maintains open-source learning materials, training, and certifications, such as KCNA, CKA, CKAD, and CKS.
+- Oversees a software conformance working group to ensure standards.
+- Actively promotes Kubernetes through marketing.
+- Supports ad hoc initiatives and events.
+- Sponsors Kubernetes-related conferences and meetups.
+
+---
+
 ## CNCF Landscape
 
 Explore the Cloud Native Computing Foundation (CNCF) landscape:  
 [https://landscape.cncf.io](https://landscape.cncf.io/)
 
 ---
+
 ## Roots of Kubernetes
 
 The evolution of Kubernetes started from **Borg**, Google's very own distributed workload manager.
