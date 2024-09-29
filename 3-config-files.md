@@ -30,10 +30,6 @@ spec:
         image: nginx:latest  # Nginx container image
         ports:
         - containerPort: 80  # Exposed port inside the container
-status:
-  replicas: 3  # The current number of replicas in the cluster
-  readyReplicas: 3  # Number of replicas currently running and ready
-  availableReplicas: 3  # Number of replicas available for service
 ```
 
 ### Explanation:
