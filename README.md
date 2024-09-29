@@ -585,11 +585,19 @@ Worker nodes are essential for executing and maintaining application workloads i
 
 ### Worker Node Components
 
-A Kubernetes worker node hosts the components that allow it to run and manage Pods, which contain your application containers. These components include the container runtime, node agent (kubelet), CRI shims, network proxy (kube-proxy), and various add-ons to extend functionality. Here’s a detailed breakdown of each component:
+A Kubernetes worker node hosts the components that allow it to run and manage Pods, which contain your application containers. These components includes:
+
+- Container runtime
+- Node agent (kubelet)
+- CRI shims
+- Network proxy (kube-proxy)
+- Add-ons to extend functionality
+
+Here’s a detailed breakdown of each component:
 
 #### 1. **Container Runtime**
 
-Kubernetes is a container orchestration engine but does not have the capability to manage or run containers directly. To handle container lifecycle management, each node in a Kubernetes cluster (both control plane and worker nodes) needs a container runtime. The container runtime is responsible for pulling container images, starting, stopping, and managing containers on the node. Kubernetes supports several container runtimes through the **Container Runtime Interface (CRI)**.
+Kubernetes is a container orchestration engine but cannot manage or run containers directly. To handle container lifecycle management, each node in a Kubernetes cluster (both control plane and worker nodes) needs a container runtime. The container runtime is responsible for pulling container images, starting, stopping, and managing containers on the node. Kubernetes supports several container runtimes through the **Container Runtime Interface (CRI)**.
 
 **Note** The recommendation is to run the Kubernetes control plane components as containers, hence the necessity of a runtime on the control plane nodes. Kubernetes supports several container runtimes:
 
