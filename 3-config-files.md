@@ -71,14 +71,14 @@ kubectl get deployment nginx -o yaml
 ```
 - **`-o yaml`**: This option formats the output in YAML, which provides a structured view of the resource's configuration and status.
 
+- It provides a comprehensive view of the **nginx** Deployment
+- Allowing to monitor its status and configuration details in a structured format. 
+- Useful for troubleshooting and understanding the current state of your Kubernetes resources.
+
 We can save it in a file too.
 ```bash
 kubectl get deployment nginx -o yaml >> nginx-depl-result.yaml
 ```
-
-- It provides a comprehensive view of the **nginx** Deployment
-- Allowing to monitor its status and configuration details in a structured format. 
-- Useful for troubleshooting and understanding the current state of your Kubernetes resources.
 
 ### Template
 
