@@ -79,7 +79,7 @@ In summary, the **template** serves as the fundamental specification for the Pod
 
 ### Selector
 
-The **selector** in Kubernetes is a crucial component that enables communication between Services and Pods. It is a key-value pair that matches the labels assigned to Pods, determining which Pods the Service should route traffic to.
+The **selector** in Kubernetes is a crucial component that enables communication between `Services and Pods`. It is a key-value pair that matches the labels assigned to Pods, determining which Pods the Service should route traffic to.
 
 - **Purpose**: Defines the Pods that a Service targets, ensuring correct traffic routing.
   
