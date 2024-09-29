@@ -1,4 +1,4 @@
-### Detailed Notes on Working with `kubectl` After Installing Minikube
+### Working with `kubectl`
 
 After setting up Minikube and `kubectl`, you can start managing your Kubernetes cluster using `kubectl`. `kubectl` is the command-line tool that interacts with the Kubernetes API server, allowing you to deploy, manage, and troubleshoot applications on your cluster.
 
