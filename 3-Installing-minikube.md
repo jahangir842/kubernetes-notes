@@ -68,13 +68,74 @@ In short, KIC makes it faster and easier to run Kubernetes clusters locally usin
    kubectl version --client --output=yaml
 
    ```
+### Notes: Requirements for Running Minikube
 
-### 1. **System Requirements**
-Before installing Minikube, ensure your system meets the following requirements:
-- Ubuntu 18.04 or newer.
-- At least 2 GB of free memory.
-- 2 CPUs or more.
-- Virtualization support enabled in your BIOS (if using a virtual driver like KVM).
+When setting up **Minikube**—a tool for running a local Kubernetes cluster on your workstation—there are specific requirements to ensure the smooth functioning of Minikube. Below is an outline of the essential prerequisites.
+
+---
+
+#### 1. **VT-x/AMD-v Virtualization**
+
+- **What is it?**  
+  VT-x (Intel) and AMD-v (AMD) are hardware virtualization technologies that enable your system to run multiple operating systems or containers simultaneously.
+  
+- **Why is it needed?**  
+  Minikube requires virtualization to run Kubernetes nodes within a virtual machine. The most common use case is when using hypervisors like VirtualBox, KVM, or Hyper-V.
+  
+- **How to check if enabled?**  
+  - **Linux**:  
+    Run the following command to check if your system supports hardware virtualization:  
+    ```bash
+    egrep -o '(vmx|svm)' /proc/cpuinfo
+    ```
+    If the command outputs `vmx` (for Intel) or `svm` (for AMD), your system supports hardware virtualization.  
+  - **Windows**:  
+    Open **Task Manager**, go to the **Performance** tab, and check if virtualization is enabled.
+  - **macOS**:  
+    macOS usually has VT-x enabled by default. However, you can check by running a virtual machine like VirtualBox or by confirming through system specifications.
+
+- **Enabling VT-x/AMD-v**:  
+  Virtualization is generally enabled through the BIOS/UEFI settings:
+  - **Reboot** your computer and enter the BIOS/UEFI setup (usually by pressing keys like `F2`, `F10`, `Del`, etc., during boot).
+  - Find the **Virtualization Technology** setting, typically under **Processor**, **Advanced**, or **CPU Configuration**.
+  - Enable it, then save and exit.
+
+---
+
+#### 2. **Operating System Compatibility**
+
+Minikube supports the following operating systems:
+  - **Linux**: Most distributions such as Ubuntu, CentOS, Fedora, and others are supported.
+  - **macOS**: macOS High Sierra 10.13 or later is supported.
+  - **Windows**: Windows 10 or later is supported.
+
+---
+
+#### 3. **CPU and Memory**
+
+- **CPU**: At least a **2-core** processor is required for Minikube to run efficiently.
+- **Memory**: A minimum of **2GB RAM** is required, but it's recommended to allocate **4GB or more** for better performance when running multiple services in Kubernetes.
+
+---
+
+#### 4. **Hypervisor**
+
+A hypervisor is necessary if you want to run Minikube in a virtualized environment. Below are common hypervisors:
+  - **VirtualBox**: Cross-platform support and easy setup.
+  - **Hyper-V**: Built-in for Windows, but must be enabled manually.
+  - **KVM**: Commonly used in Linux environments.
+  - **Docker**: Minikube can run using Docker's container runtime, avoiding the need for a full VM.
+
+---
+
+#### 5. **Minikube Installation Dependencies**
+
+- **kubectl**: The command-line tool used to interact with the Kubernetes cluster. Ensure it is installed on your system.
+- **Container or VM drivers**: Depending on your environment (Docker, VirtualBox, KVM, etc.), you may need to install additional drivers.
+
+---
+
+By ensuring that your system meets these requirements, you can seamlessly run Minikube and begin deploying and testing Kubernetes clusters locally.
 
 ### 2. **Prerequisites**
 You'll need to install some required dependencies, including:
