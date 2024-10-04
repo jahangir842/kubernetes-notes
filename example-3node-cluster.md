@@ -46,10 +46,11 @@ check if swap is enabled Using the `free` Command
 
 The `free` command provides a summary of memory usage, including swap space.
 
-If enable, disable with this command:
 ```bash
 free -h
 ```
+If enable, disable with this command:
+
 ```bash
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
