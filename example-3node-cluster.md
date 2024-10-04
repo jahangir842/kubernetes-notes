@@ -68,8 +68,13 @@ kubectl version --client
 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
-#### 1.5. Install kubelet
+#### **If Missing `socat` error**
 
+You can install `socat` using the following command:
+
+```bash
+sudo apt install socat
+```
 
 #### 1.6. Initialize Kubernetes Control Plane
 On the **Ubuntu control plane**, initialize the Kubernetes cluster:
