@@ -70,12 +70,6 @@ https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-ku
 
 #### 1.5. Install kubelet
 
-### Check required ports
-
-These required ports need to be open in order for Kubernetes components to communicate with each other. You can use tools like netcat to check if a port is open. For example:
-
-nc 127.0.0.1 6443 -v
-
 
 #### 1.6. Initialize Kubernetes Control Plane
 On the **Ubuntu control plane**, initialize the Kubernetes cluster:
@@ -98,6 +92,10 @@ To allow communication between your pods, install a network add-on like **Flanne
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
+
+### Starting Cluster:
+
+https://v1-30.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 
 ---
 
