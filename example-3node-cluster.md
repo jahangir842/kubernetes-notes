@@ -56,16 +56,21 @@ sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 ```
 verify again.
-#### 1.5. Install kubeadm, kubelet, and kubectl
-Add the Kubernetes APT repository and install the necessary components:
+#### 1.5. Install kubectl
 
 ```bash
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
-sudo apt update
-sudo apt install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
 ```
+
+#### 1.5. Install kubeadm, kubelet, and kubectl
+
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+#### 1.5. Install kubelet
+
+
 
 #### 1.6. Initialize Kubernetes Control Plane
 On the **Ubuntu control plane**, initialize the Kubernetes cluster:
