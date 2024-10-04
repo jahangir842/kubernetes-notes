@@ -39,13 +39,22 @@ sudo sysctl --system
 ```
 
 #### 1.4. Disable Swap
+
 Kubernetes requires that swap be disabled.
 
+check if swap is enabled Using the `free` Command
+
+The `free` command provides a summary of memory usage, including swap space.
+
+If enable, disable with this command:
+```bash
+free -h
+```
 ```bash
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 ```
-
+verify again.
 #### 1.5. Install kubeadm, kubelet, and kubectl
 Add the Kubernetes APT repository and install the necessary components:
 
