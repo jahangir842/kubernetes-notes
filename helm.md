@@ -14,7 +14,7 @@ In essence, Helm allows you to easily define, install, and upgrade even the most
 
 Follow these steps to install Helm on an Ubuntu system:
 
-#### 1. **Install Helm using Script**
+####  **Install Helm using Script**
 Helm provides a simple installation script to automate the process:
 
 ```bash
@@ -28,7 +28,7 @@ This script downloads and installs the latest version of Helm (Helm 3). After in
 helm version
 ```
 
-#### 2. **Install Helm via APT (Package Manager)**
+#### **Install Helm via APT (Package Manager)**
 
 Alternatively, you can install Helm using the package manager by adding the Helm repository:
 
@@ -51,16 +51,22 @@ Verify the installation:
 helm version
 ```
 
+### **Show Available Commands**
+   To see all available Helm commands:
+   ```bash
+   helm help
+   ```
+
 ---
 
 ### How to Use Helm
 
 Once Helm is installed, you can start using it to manage Kubernetes applications via Helm **charts**.
 
-#### 1. **Initialize Helm**
+####  **Initialize Helm**
 In Helm 3 (the latest version), Helm no longer requires a separate server-side component (`tiller`), so there's no need to initialize Helm. You can directly start using Helm commands.
 
-#### 2. **Searching for a Helm Chart**
+####  **Searching for a Helm Chart**
 Helm allows you to search for charts available in public repositories (like the Helm stable repository).
 
 ```bash
@@ -69,7 +75,7 @@ helm search repo mysql
 ```
 Initially, there would be no repository.
 
-#### 3. **Adding a Helm Repository**
+####  **Adding a Helm Repository**
 Helm repositories are where charts are stored. You can add public repositories like `bitnami` for application charts.
 
 ```bash
@@ -117,7 +123,29 @@ Here are the main Helm repositories you can add:
 
 These are the most popular and widely used repositories for Kubernetes applications.
 
-#### 4. **Installing a Helm Chart**
+###  **List Helm Repositories**
+   To see the list of repositories you’ve added to Helm:
+   ```bash
+   helm repo list
+   ```
+
+###  **Update Helm Repositories**
+   Update all the repositories to get the latest chart information:
+   ```bash
+   helm repo update
+   ```
+
+###  **Search Charts in a Repository**
+   To search for charts in the repositories you've added:
+   ```bash
+   helm search repo <chart_name>
+   ```
+   Example:
+   ```bash
+   helm search repo nginx
+   ```
+
+#### **Installing a Helm Chart**
 After adding the repository, you can install a chart. For example, installing **MySQL** from the Bitnami repository:
 
 ```bash
@@ -130,35 +158,35 @@ helm install my-mysql bitnami/mysql
 
 This will install the MySQL application in your Kubernetes cluster.
 
-#### 5. **Listing Installed Helm Releases**
+#### **Listing Installed Helm Releases**
 To view all Helm releases (applications) installed on your Kubernetes cluster:
 
 ```bash
 helm list
 ```
 
-#### 6. **Upgrading a Helm Release**
+#### **Upgrading a Helm Release**
 You can upgrade an application by upgrading the corresponding Helm chart.
 
 ```bash
 helm upgrade my-mysql bitnami/mysql
 ```
 
-#### 7. **Uninstalling a Helm Release**
+#### **Uninstalling a Helm Release**
 To remove an application from your Kubernetes cluster:
 
 ```bash
 helm uninstall my-mysql
 ```
 
-#### 8. **Viewing Helm Chart Values**
+#### **Viewing Helm Chart Values**
 Helm charts often have configurable options. You can inspect the available values for a chart by using the following command:
 
 ```bash
 helm show values bitnami/mysql
 ```
 
-#### 9. **Customizing a Helm Install**
+#### **Customizing a Helm Install**
 You can override the default values provided in the chart using the `--set` flag:
 
 ```bash
