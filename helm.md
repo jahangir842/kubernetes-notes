@@ -67,6 +67,7 @@ Helm allows you to search for charts available in public repositories (like the 
 # Search for a chart (e.g., for MySQL)
 helm search repo mysql
 ```
+Initially, there would be no repository.
 
 #### 3. **Adding a Helm Repository**
 Helm repositories are where charts are stored. You can add public repositories like `bitnami` for application charts.
@@ -78,6 +79,43 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 # Update the Helm repository to fetch the latest charts
 helm repo update
 ```
+
+Here are the main Helm repositories you can add:
+
+ **Bitnami**: Popular open-source applications.
+   ```bash
+   helm repo add bitnami https://charts.bitnami.com/bitnami
+   ```
+
+ **Elastic**: ELK stack (Elasticsearch, Kibana, Logstash).
+   ```bash
+   helm repo add elastic https://helm.elastic.co
+   ```
+
+ **Ingress NGINX**: NGINX Ingress Controller.
+   ```bash
+   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+   ```
+
+ **Jetstack**: Cert-Manager (SSL certificates).
+   ```bash
+   helm repo add jetstack https://charts.jetstack.io
+   ```
+
+ **Prometheus Community**: Prometheus & monitoring tools.
+   ```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   ```
+
+ **Grafana**: Grafana, Loki, observability tools.
+   ```bash
+   helm repo add grafana https://grafana.github.io/helm-charts
+   ```
+
+ **Artifact Hub**: Centralized hub for various Helm charts.
+   - **URL**: https://artifacthub.io
+
+These are the most popular and widely used repositories for Kubernetes applications.
 
 #### 4. **Installing a Helm Chart**
 After adding the repository, you can install a chart. For example, installing **MySQL** from the Bitnami repository:
