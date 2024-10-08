@@ -1,0 +1,151 @@
+### What is Helm?
+
+**Helm** is a package manager for Kubernetes, designed to simplify the process of deploying and managing applications on Kubernetes clusters. Helm uses a packaging format called **charts**, which are collections of files that describe a related set of Kubernetes resources. Helm helps you to:
+- **Install** applications (via charts) on Kubernetes.
+- **Upgrade** applications with new versions.
+- **Manage** application dependencies.
+- **Rollback** to previous versions of your applications.
+  
+In essence, Helm allows you to easily define, install, and upgrade even the most complex Kubernetes applications using a single command.
+
+---
+
+### How to Install Helm on Ubuntu
+
+Follow these steps to install Helm on an Ubuntu system:
+
+#### 1. **Install Helm using Script**
+Helm provides a simple installation script to automate the process:
+
+```bash
+# Download the Helm installation script
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+This script downloads and installs the latest version of Helm (Helm 3). After installation, you can verify the installation by running:
+
+```bash
+helm version
+```
+
+#### 2. **Install Helm via APT (Package Manager)**
+
+Alternatively, you can install Helm using the package manager by adding the Helm repository:
+
+```bash
+# Add the Helm GPG key and repository
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+sudo apt-get install apt-transport-https --yes
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+
+# Update the package list
+sudo apt-get update
+
+# Install Helm
+sudo apt-get install helm
+```
+
+Verify the installation:
+
+```bash
+helm version
+```
+
+---
+
+### How to Use Helm
+
+Once Helm is installed, you can start using it to manage Kubernetes applications via Helm **charts**.
+
+#### 1. **Initialize Helm**
+In Helm 3 (the latest version), Helm no longer requires a separate server-side component (`tiller`), so there's no need to initialize Helm. You can directly start using Helm commands.
+
+#### 2. **Searching for a Helm Chart**
+Helm allows you to search for charts available in public repositories (like the Helm stable repository).
+
+```bash
+# Search for a chart (e.g., for MySQL)
+helm search repo mysql
+```
+
+#### 3. **Adding a Helm Repository**
+Helm repositories are where charts are stored. You can add public repositories like `bitnami` for application charts.
+
+```bash
+# Add the Bitnami Helm repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Update the Helm repository to fetch the latest charts
+helm repo update
+```
+
+#### 4. **Installing a Helm Chart**
+After adding the repository, you can install a chart. For example, installing **MySQL** from the Bitnami repository:
+
+```bash
+# Install MySQL with Helm
+helm install my-mysql bitnami/mysql
+```
+
+- `my-mysql` is the release name for your deployment.
+- `bitnami/mysql` is the chart name.
+
+This will install the MySQL application in your Kubernetes cluster.
+
+#### 5. **Listing Installed Helm Releases**
+To view all Helm releases (applications) installed on your Kubernetes cluster:
+
+```bash
+helm list
+```
+
+#### 6. **Upgrading a Helm Release**
+You can upgrade an application by upgrading the corresponding Helm chart.
+
+```bash
+helm upgrade my-mysql bitnami/mysql
+```
+
+#### 7. **Uninstalling a Helm Release**
+To remove an application from your Kubernetes cluster:
+
+```bash
+helm uninstall my-mysql
+```
+
+#### 8. **Viewing Helm Chart Values**
+Helm charts often have configurable options. You can inspect the available values for a chart by using the following command:
+
+```bash
+helm show values bitnami/mysql
+```
+
+#### 9. **Customizing a Helm Install**
+You can override the default values provided in the chart using the `--set` flag:
+
+```bash
+helm install my-mysql bitnami/mysql --set mysqlRootPassword=secretpassword,mysqlUser=myuser
+```
+
+Alternatively, you can create a YAML file with the custom values and use that during installation:
+
+```bash
+# Create a custom-values.yaml file
+vim custom-values.yaml
+
+# Use the custom-values.yaml during installation
+helm install my-mysql bitnami/mysql -f custom-values.yaml
+```
+
+---
+
+### Basic Helm Commands Summary
+
+- **Add a repository**: `helm repo add <repo-name> <repo-url>`
+- **Search for charts**: `helm search repo <chart-name>`
+- **Install a chart**: `helm install <release-name> <chart-name>`
+- **List installed charts**: `helm list`
+- **Upgrade a release**: `helm upgrade <release-name> <chart-name>`
+- **Uninstall a release**: `helm uninstall <release-name>`
+
+Helm simplifies deploying and managing Kubernetes applications, enabling you to define your application setup as reusable templates.
