@@ -105,6 +105,22 @@ To manually create **Persistent Volumes (PV)** in a Kubernetes cluster set up wi
    - **NFS**: If you have an NFS server, it’s suitable for shared storage.
    - **Local storage**: A local disk that can be mounted directly.
 
+
+- **HostPath**:
+  - Mounts a directory or file from the node's filesystem into a pod.
+  - **Suitable for testing or local development** but **not recommended for production**.
+  - Ties the pod to a specific node, making data unavailable if the pod is rescheduled elsewhere.
+  - No redundancy or failover support.
+
+- **Local Storage**:
+  - Utilizes a local disk attached to a specific node.
+  - **Production-ready** with node affinity, where Kubernetes manages pod scheduling to ensure the pod is placed on the node with the local disk.
+  - Suitable for applications requiring **high performance and low latency** (e.g., databases).
+  - Data is persistent but tied to the node; requires recovery strategies for node failure.
+
+In short, **HostPath** is for temporary, non-production scenarios, while **Local Storage** offers persistence and performance for specific production workloads tied to local nodes.
+
+
 Here's an example using **HostPath**. This is the easiest way to create a local persistent volume on a Kubernetes node.
 
 #### Example of a HostPath-based PV YAML:
@@ -143,7 +159,153 @@ You can verify the PV was created by running:
 ```bash
 kubectl get pv
 ```
+---
 
+#### Example of a Local Storage-based PV YAML:
+
+You'll need to follow several steps to manually set up **local storage** as a **Persistent Volume (PV)** and bind it to a **Persistent Volume Claim (PVC)**. Here's how you can do it:
+
+### Steps to Set Up Local Storage:
+
+#### 1. **Prepare Local Storage Directory on the Node**
+You'll need to create a directory on your Kubernetes node that will act as the storage for the persistent volume.
+
+On your node (where Minikube is running or on any node in your kubeadm cluster):
+```bash
+sudo mkdir -p /mnt/disks/ssd1
+sudo chmod 777 /mnt/disks/ssd1  # Set appropriate permissions
+```
+This path (`/mnt/disks/ssd1`) will be used for the local storage.
+
+#### 2. **Create a Persistent Volume (PV) YAML**
+Create a YAML file (`local-pv.yaml`) to define the local storage as a Persistent Volume.
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+spec:
+  capacity:
+    storage: 100Gi               # Size of the volume
+  accessModes:
+    - ReadWriteOnce              # Access mode for the volume
+  persistentVolumeReclaimPolicy: Retain  # Retain data even after PVC is deleted
+  storageClassName: local-storage        # Define a custom storage class
+  local:
+    path: /mnt/disks/ssd1         # Path to the local disk directory on the node
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - <your-node-name>  # Replace with the actual node name where the PV is located
+```
+
+- **storageClassName**: Defines a custom storage class (`local-storage`) for local volumes.
+- **nodeAffinity**: Specifies the node where this local storage volume resides (replace `<your-node-name>` with the actual hostname of your node).
+
+You can get the node name by running:
+```bash
+kubectl get nodes
+```
+
+#### 3. **Apply the Persistent Volume YAML**
+Apply the `local-pv.yaml` file to create the Persistent Volume.
+
+```bash
+kubectl apply -f local-pv.yaml
+```
+
+Verify the Persistent Volume is created:
+```bash
+kubectl get pv
+```
+
+#### 4. **Create a Persistent Volume Claim (PVC) YAML**
+Now create a PVC that will request storage from the PV you just created. Create another file (`local-pvc.yaml`):
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  storageClassName: local-storage   # Must match the storage class of the PV
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi                # Request a portion of the PV's storage
+```
+
+#### 5. **Apply the Persistent Volume Claim YAML**
+Apply the PVC to claim storage from the local PV.
+
+```bash
+kubectl apply -f local-pvc.yaml
+```
+
+Verify the PVC is bound to the PV:
+```bash
+kubectl get pvc
+```
+
+#### 6. **Use the Persistent Volume in a Pod**
+Once the PVC is successfully bound to the PV, you can use it in a Pod. Here's an example Pod definition (`local-pod.yaml`) that uses the PVC:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: local-storage-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: "/mnt/storage"
+      name: local-storage
+  volumes:
+  - name: local-storage
+    persistentVolumeClaim:
+      claimName: local-pvc
+```
+
+Apply the Pod definition:
+```bash
+kubectl apply -f local-pod.yaml
+```
+
+This Pod will mount the local storage at `/mnt/storage` inside the container.
+
+#### 7. **Verify the Setup**
+Check that the Pod is running:
+```bash
+kubectl get pods
+```
+
+You can also verify that the local storage is mounted correctly by logging into the Pod and checking the mounted volume:
+
+```bash
+kubectl exec -it local-storage-pod -- /bin/sh
+```
+
+Inside the container, you can navigate to `/mnt/storage` to see your mounted storage.
+
+---
+
+### Key Notes:
+- **Node Affinity**: Since this is local storage, the pod can only run on the node where the local PV exists.
+- **Persistent Volume Reclaim Policy**: The reclaim policy `Retain` ensures that even if the PVC is deleted, the data in the PV is retained.
+- **StorageClass**: Use a custom `local-storage` StorageClass to differentiate this local PV from other cloud or network storage.
+
+This setup makes local storage usable in a Kubernetes environment, even on a single node like Minikube or in a kubeadm cluster.
+
+---
 #### Step 2: Define a Persistent Volume Claim (PVC)
 The **Persistent Volume Claim (PVC)** is what your application (or pod) will use to request storage.
 
