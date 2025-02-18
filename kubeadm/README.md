@@ -52,8 +52,10 @@ https://github.com/jahangir842/linux-notes/blob/main/firewall/firewalld.md
 
 ---
 
+To Set static IP addresses, use the following guide:
 
-   Set static IP addresses: [configure_static_ip_in_RHEL_based:](https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md)
+https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md
+
    ```
    BOOTPROTO=static
    IPADDR=192.168.1.121
@@ -61,6 +63,8 @@ https://github.com/jahangir842/linux-notes/blob/main/firewall/firewalld.md
    GATEWAY=192.168.1.1
    DNS1=8.8.8.8
    ```
+
+---
 
 4. **Disable Swap on all nodes:**
    ```bash
