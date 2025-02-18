@@ -62,9 +62,9 @@ To Set static IP addresses, use the following guide:
 https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md
 
    ```
-   Master-Node:   192.168.1.121
-   Worker-Node 1: 192.168.1.122
-   Worker-Node 2: 192.168.1.123
+   Master-Node:   192.168.1.181
+   Worker-Node 1: 192.168.1.182
+   Worker-Node 2: 192.168.1.183
 
    NETMASK=255.255.255.0
    GATEWAY=192.168.1.1
