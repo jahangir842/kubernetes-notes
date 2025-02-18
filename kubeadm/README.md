@@ -44,7 +44,16 @@ sudo apt install virtualbox virtualbox-ext-pack -y
    echo "master-node" | sudo tee /etc/hostname
    ```
 
-   Set static IP addresses in [configure_static_ip_in_RHEL_based:](https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md)
+---
+
+To enable **port 22** (SSH) with **firewalld**, use the following guide:
+
+https://github.com/jahangir842/linux-notes/blob/main/firewall/firewalld.md
+
+---
+
+
+   Set static IP addresses: [configure_static_ip_in_RHEL_based:](https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md)
    ```
    BOOTPROTO=static
    IPADDR=192.168.1.121
