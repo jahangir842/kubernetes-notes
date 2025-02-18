@@ -47,9 +47,9 @@ sudo apt install virtualbox virtualbox-ext-pack -y
    Set static IP addresses in [configure_static_ip_in_RHEL_based:](https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md)
    ```
    BOOTPROTO=static
-   IPADDR=192.168.56.100
+   IPADDR=192.168.1.121
    NETMASK=255.255.255.0
-   GATEWAY=192.168.56.1
+   GATEWAY=192.168.1.1
    DNS1=8.8.8.8
    ```
 
