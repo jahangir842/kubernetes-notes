@@ -20,6 +20,7 @@ You will set up a Kubernetes cluster using `kubeadm` with the following architec
 ## **Step-by-Step Guide to Deploy Kubernetes on AlmaLinux using kubeadm**
 
 ### **Step 1: Install VirtualBox and Create Virtual Machines**
+
 #### **1.1 Install VirtualBox (if not installed)**
 If VirtualBox is not installed, run:
 ```bash
@@ -27,7 +28,7 @@ sudo apt update
 sudo apt install virtualbox virtualbox-ext-pack -y
 ```
 
-#### **1.2 Create Three Virtual Machines**
+### **1.2 Create Three Virtual Machines**
 1. Open VirtualBox and create **three VMs** with the following specs:
    - **VM Name:** `master-node`, `worker-node1`, `worker-node2`
    - **OS:** AlmaLinux 9
@@ -36,21 +37,25 @@ sudo apt install virtualbox virtualbox-ext-pack -y
    - **Storage:** 30GB (Dynamically allocated)
    - **Network:** **Bridged Adapter** (or Host-Only Adapter for local testing)
 
-2. **Attach ISO & Install AlmaLinux 9** on all VMs.
+**Attach ISO & Install AlmaLinux 9** on all VMs.
 
-3. **Set Hostnames & Static IPs**  
+---
+
+### **Set Hostnames & Static IPs**  
    Modify `/etc/hostname` on each VM:
    ```bash
    echo "master-node" | sudo tee /etc/hostname
    ```
 
 ---
+### **enable **port 22** (SSH)**
 
 To enable **port 22** (SSH) with **firewalld**, use the following guide:
 
 https://github.com/jahangir842/linux-notes/blob/main/firewall/firewalld.md
 
 ---
+### Static IPs
 
 To Set static IP addresses, use the following guide:
 
@@ -66,7 +71,8 @@ https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static
 
 ---
 
-4. **Disable Swap on all nodes:**
+### **Disable Swap on all nodes:**
+
    ```bash
    sudo swapoff -a
    sudo sed -i '/swap/d' /etc/fstab
