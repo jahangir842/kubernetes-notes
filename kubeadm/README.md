@@ -1,4 +1,4 @@
-That sounds like a solid setup for a Kubernetes cluster on VirtualBox using AlmaLinux. Here's how we can structure this guide:
+## Install Kubernetes Cluster with Kubeadm
 
 ---
 
