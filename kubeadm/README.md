@@ -44,7 +44,7 @@ sudo apt install virtualbox virtualbox-ext-pack -y
    echo "master-node" | sudo tee /etc/hostname
    ```
 
-   Set static IP addresses in [`/etc/sysconfig/network-scripts/ifcfg-enp0s3` (Example for Master Node):](https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md)
+   Set static IP addresses in [configure_static_ip_in_RHEL_based:](https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md)
    ```
    BOOTPROTO=static
    IPADDR=192.168.56.100
