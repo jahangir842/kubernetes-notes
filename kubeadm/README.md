@@ -82,38 +82,80 @@ https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static
 
 ---
 
-### **Step 2: Install Required Dependencies**
-Perform the following steps **on all three nodes**:
+Here’s the **modified version** of Step 2 with **improvements**, explanations, and best practices.
 
-1. **Update System**
-   ```bash
-   sudo dnf update -y
-   ```
+---
 
-2. **Set SELinux to Permissive Mode**
-   ```bash
-   sudo setenforce 0
-   sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-   ```
+## **Step 2: Install Required Dependencies**
+Perform the following steps on **all three nodes** to set up a stable Kubernetes environment.
 
-3. **Enable IP Forwarding**
-   ```bash
-   cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-   net.bridge.bridge-nf-call-iptables  = 1
-   net.bridge.bridge-nf-call-ip6tables = 1
-   net.ipv4.ip_forward                 = 1
-   EOF
-   sudo sysctl --system
-   ```
 
-4. **Install Container Runtime (containerd)**
-   ```bash
-   sudo dnf install -y containerd
-   sudo mkdir -p /etc/containerd
-   containerd config default | sudo tee /etc/containerd/config.toml
-   sudo systemctl restart containerd
-   sudo systemctl enable containerd
-   ```
+### **1. Update System Packages**
+Keeping the system updated ensures that you have the latest security patches and bug fixes.
+```bash
+sudo dnf update -y
+```
+
+### **2. Configure SELinux (Set to Permissive Mode)**
+Kubernetes does not work well with SELinux in **Enforcing** mode by default, so we set it to **Permissive**.
+
+#### **Temporarily Disable SELinux (Immediate Effect)**
+```bash
+sudo setenforce 0
+```
+- This command **temporarily** sets SELinux to **Permissive mode** until the next reboot.
+
+#### **Permanently Disable SELinux (After Reboot)**
+```bash
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+```
+- This modifies `/etc/selinux/config` to ensure SELinux remains **Permissive** even after a reboot.
+
+### **3. Enable IP Forwarding**
+IP forwarding is essential for Kubernetes networking to function correctly.
+
+#### **Create a Configuration File**
+```bash
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+```
+- **`net.bridge.bridge-nf-call-iptables = 1`** → Ensures traffic passes through `iptables` rules for filtering.
+- **`net.bridge.bridge-nf-call-ip6tables = 1`** → Same as above but for IPv6.
+- **`net.ipv4.ip_forward = 1`** → Enables packet forwarding for Kubernetes networking.
+
+#### **Apply the Changes Immediately**
+```bash
+sudo sysctl --system
+```
+- This reloads system kernel parameters from all config files (`/etc/sysctl.d/`).
+
+### **4. Install Container Runtime (containerd)**
+Kubernetes requires a **container runtime** to run its workloads. We will use **containerd**.
+
+#### **Install containerd**
+```bash
+sudo dnf install -y containerd
+```
+- Installs the **container runtime**.
+
+#### **Configure containerd**
+```bash
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+```
+- Creates the necessary **configuration directory** (`/etc/containerd`).
+- Generates and saves the default **containerd configuration**.
+
+#### **Restart and Enable containerd**
+```bash
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+```
+- **Restart** containerd to apply the configuration.
+- **Enable** it to start automatically at boot.
 
 ---
 
