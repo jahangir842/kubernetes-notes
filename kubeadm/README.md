@@ -188,6 +188,20 @@ sudo systemctl enable containerd
    sudo systemctl enable kubelet
    ```
 
+2. **Enable CRI Plugin**
+
+Edit the following config file of containerd:
+
+```bash
+sudo nano /etc/containerd/config.toml
+```
+
+Verify the following plugin is not disabled.
+
+```bash
+#disabled_plugins = ["cri"]
+```
+
 ---
 
 ### **Step 4: Initialize the Kubernetes Control Plane**
