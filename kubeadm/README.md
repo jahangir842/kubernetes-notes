@@ -165,6 +165,9 @@ sudo systemctl enable containerd
 ---
 
 ### **Step 3: Install Kubernetes Components**
+
+**Official Link:** https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
 1. **Add Kubernetes Repository**
    ```bash
    cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
