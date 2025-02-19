@@ -1,72 +1,93 @@
-To completely **reset a Kubernetes worker node** so it can rejoin a cluster, follow these steps:
+## **How to Reset a Kubernetes Worker Node**  
+
+If you need to **reset a worker node** in your Kubernetes cluster, follow these steps carefully.
 
 ---
 
-## **🛠 Step 1: Reset Kubernetes Components**
-Run the following command:  
+### **🛠 Step 1: Run `kubeadm reset`**
+This command resets the node, but it **does not remove CNI configuration, iptables rules, or kubeconfig files**.  
+Run the following:  
 ```bash
 sudo kubeadm reset
 ```
-- This will **remove** all Kubernetes configurations from the node.
-- If prompted, type **"y"** to confirm.
+When prompted, type **`y`** to proceed.
 
-If you get an error about `iptables`, reset them manually:
+---
+
+### **🗑 Step 2: Remove CNI Configuration**
+Since the reset **does not clean CNI**, remove the CNI network configurations manually:  
+```bash
+sudo rm -rf /etc/cni/net.d
+```
+
+---
+
+### **🔄 Step 3: Reset iptables and IPVS (if applicable)**
+Kubernetes modifies firewall rules, so you need to reset them.
+
+#### **Flush iptables:**
 ```bash
 sudo iptables -F
 sudo iptables -X
 sudo iptables -t nat -F
 sudo iptables -t nat -X
+sudo iptables -t mangle -F
+sudo iptables -t mangle -X
+```
+
+#### **Clear IPVS rules (if used):**
+```bash
+sudo ipvsadm --clear
+```
+(If `ipvsadm` is not installed, you can skip this step.)
+
+---
+
+### **📂 Step 4: Remove Kubeconfig Files**
+```bash
+rm -rf $HOME/.kube/config
 ```
 
 ---
 
-## **🗑 Step 2: Remove Old Kubernetes Files**
-Manually clean up leftover directories:
-```bash
-sudo rm -rf /etc/kubernetes/ /var/lib/kubelet /var/lib/etcd /var/lib/cni /var/run/kubernetes ~/.kube
-```
----
+### **🔄 Step 5: Restart Required Services**
+Restart container runtime and `kubelet`:
 
-## **🔍 Step 3: Stop Running Services**
-Ensure that Kubernetes-related services are stopped:
-```bash
-sudo systemctl stop kubelet
-sudo systemctl stop docker  # or containerd
-```
-Then restart Docker/Containerd:
-```bash
-sudo systemctl start docker
-```
-If you use `containerd`, restart it instead:
-```bash
-sudo systemctl start containerd
-```
+- **If using Docker:**
+  ```bash
+  sudo systemctl restart docker
+  ```
+- **If using Containerd:**
+  ```bash
+  sudo systemctl restart containerd
+  ```
+- **Restart `kubelet`:**
+  ```bash
+  sudo systemctl restart kubelet
+  ```
 
 ---
 
-## **🔎 Step 4: Verify That Ports Are Free**
-Check if Kubernetes-related ports (6443, 10250) are still being used:
-```bash
-sudo netstat -tulnp | grep -E '6443|10250'
-```
-If a process is using a port, find its PID and kill it:
-```bash
-sudo kill -9 <PID>
-```
+### **🔗 Step 6: Rejoin the Cluster**
+To rejoin the node, use the **join command** from the control plane:
 
----
-
-## **🔄 Step 5: Rejoin the Cluster**
-Once the node is reset, you need to **rejoin the cluster**.  
-Run the `kubeadm join` command again (you can get this from the control plane using `kubeadm token create --print-join-command`):
 ```bash
 sudo kubeadm join <master-ip>:6443 --token <your-token> --discovery-token-ca-cert-hash sha256:<your-ca-hash>
 ```
+If you don’t have the command, retrieve it from the control plane node:
+```bash
+kubeadm token create --print-join-command
+```
 
 ---
 
-After running this, the worker node should successfully join the cluster.  
-You can check the status from the control plane:
+### **✅ Step 7: Verify Node Status**
+Once rejoined, check if the node is in a **Ready** state:  
 ```bash
 kubectl get nodes
 ```
+
+---
+
+💡 **That's it!** Your node has been reset and rejoined to the cluster. 🚀  
+Let me know if you run into any issues!
