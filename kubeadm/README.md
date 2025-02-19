@@ -136,6 +136,11 @@ sudo sysctl --system
 Kubernetes requires a **container runtime** to run its workloads. We will use **containerd**.
 
 #### **Install containerd**
+
+**Official Link:** https://docs.docker.com/engine/install/centos/
+
+**Note:** The containerd is provided to linux package managers from Docker.
+
 ```bash
 sudo dnf install -y containerd
 ```
