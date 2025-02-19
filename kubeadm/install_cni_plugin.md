@@ -70,7 +70,7 @@ sudo tee /etc/cni/net.d/10-bridge.conf > /dev/null <<EOF
     "ipam": {
         "type": "host-local",
         "ranges": [
-            [{"subnet": "192.168.1.0/24"}]
+            [{"subnet": "10.10.20.0/24"}]
         ],
         "routes": [{"dst": "0.0.0.0/0"}]
     }
