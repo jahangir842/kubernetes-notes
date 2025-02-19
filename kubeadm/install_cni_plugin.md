@@ -85,10 +85,7 @@ For `containerd`:
 ```bash
 sudo systemctl restart containerd
 ```
-For `cri-o`:  
-```bash
-sudo systemctl restart crio
-```
+
 
 ##### **5. Verify the CNI Configuration**  
 Check if the network is correctly set up:  
