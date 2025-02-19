@@ -45,6 +45,7 @@ If CNI plugins are not installed, download and install them using the package ma
   ```bash
   sudo mkdir -p /opt/cni/bin
   curl -L -o /tmp/cni-plugins.tgz https://github.com/containernetworking/plugins/releases/download/v1.6.2/cni-plugins-linux-amd64-v1.6.2.tgz
+  sudo dnf install tar -y
   sudo tar -C /opt/cni/bin -xzf /tmp/cni-plugins.tgz
   ```
 
