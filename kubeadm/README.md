@@ -202,6 +202,11 @@ Verify the following plugin is not disabled.
 #disabled_plugins = ["cri"]
 ```
 
+#### **Restart containerd**
+```bash
+sudo systemctl restart containerd
+```
+
 ---
 
 ### **Step 4: Initialize the Kubernetes Control Plane**
