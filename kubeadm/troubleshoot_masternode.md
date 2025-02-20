@@ -19,16 +19,19 @@ sudo crictl ps -a
 ```
 - If pods for kubernetes components are not running, check the logs.
 
+---
+## Check Logs
 
-#### 2️⃣ **Check API Server Logs**
+#### 1 **Check API Server Logs**
 ```sh
 sudo crictl logs $(sudo crictl ps -q --name kube-apiserver)
 ```
 or find the container ID and use:
 ```sh
 sudo crictl logs <container-id>
+```
 
-#### 2️⃣ **Check etcd Logs**
+#### 2 **Check etcd Logs**
 ```sh
 sudo crictl logs $(sudo crictl ps -q --name etcd)
 ```
@@ -36,6 +39,9 @@ or find the container ID and use:
 ```sh
 sudo crictl logs <container-id>
 ```
+
+---
+## Check Manifest
 
 #### 3️⃣ **Check Static Pod Manifest**
 Since **etcd is a static pod**, it's defined in:
