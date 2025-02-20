@@ -18,9 +18,20 @@ Since Kubernetes is down, you need to check pods from the **container runtime** 
 sudo crictl ps -a
 ```
 - If pods for kubernetes components are not running, check the logs.
+- API server cannot run properly if etcd is not running because etcd is the primary key-value store for Kubernetes. The API server relies on etcd to store and retrieve cluster state information.
+
 
 ---
 ## Check Logs
+
+#### 2 **Check etcd Logs**
+```sh
+sudo crictl logs $(sudo crictl ps -q --name etcd)
+```
+or find the container ID and use:
+```sh
+sudo crictl logs <container-id>
+```
 
 #### 1 **Check API Server Logs**
 ```sh
@@ -31,14 +42,7 @@ or find the container ID and use:
 sudo crictl logs <container-id>
 ```
 
-#### 2 **Check etcd Logs**
-```sh
-sudo crictl logs $(sudo crictl ps -q --name etcd)
-```
-or find the container ID and use:
-```sh
-sudo crictl logs <container-id>
-```
+
 
 ---
 ## Check Manifest
