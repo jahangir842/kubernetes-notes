@@ -1,3 +1,5 @@
+## API server is down
+
 If the API server is down with following error:
 
 ```bash
