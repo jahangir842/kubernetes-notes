@@ -1,4 +1,4 @@
-### Guide: Understanding and Resolving Missing CNI Configurations in Container Runtimes  
+## Note: Don't install this if you are using Callico, Funnel and any other software based CNI Solution  
 
 #### **What is CNI (Container Network Interface)?**  
 The **Container Network Interface (CNI)** is a specification and set of libraries used by container runtimes (such as Kubernetes, Docker, containerd, and CRI-O) to manage networking for containers. CNI enables communication between containers and external networks by configuring network interfaces and IP addresses.
