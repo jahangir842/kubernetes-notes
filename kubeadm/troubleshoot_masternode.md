@@ -19,12 +19,14 @@ sudo crictl ps -a
 ```
 - If pods for kubernetes components are not running, check the logs.
 
-#### 1️⃣ **Check etcd Static Pod Manually**
+
+#### 2️⃣ **Check API Server Logs**
 ```sh
-sudo crictl ps | grep etcd
+sudo crictl logs $(sudo crictl ps -q --name kube-apiserver)
 ```
-- If it's running, it will show the container ID.
-- If not, check the logs.
+or find the container ID and use:
+```sh
+sudo crictl logs <container-id>
 
 #### 2️⃣ **Check etcd Logs**
 ```sh
