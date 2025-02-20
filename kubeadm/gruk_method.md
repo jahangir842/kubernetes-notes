@@ -22,6 +22,20 @@ sudo dnf update -y
 sudo reboot
 ```
 
+### **enable **port 22** (SSH)**
+
+To enable **port 22** (SSH) with **firewalld**, use the following guide:
+
+https://github.com/jahangir842/linux-notes/blob/main/firewall/firewalld.md
+
+---
+### Static IPs
+
+To Set static IP addresses, use the following guide:
+
+https://github.com/jahangir842/linux-notes/blob/main/networking/configure_static_ip_in_RHEL_based_new.md
+
+
 2. **Set Hostnames**
 On k8s-master:
 ```bash
