@@ -76,4 +76,83 @@ sudo crictl logs $(sudo crictl ps -q --name kube-apiserver)
   sudo yum install cri-tools -y  # (CentOS/RHEL)
   ```
   
-Let me know what you find!
+---
+
+## **kube-apiserver** is restarting frequently
+
+If **kube-apiserver** is restarting frequently, we need to diagnose why it's failing. The most likely causes are:  
+
+- **etcd connection issues**  
+- **Certificate or authentication problems**  
+- **Port binding conflicts**  
+- **Resource constraints (CPU/memory)**  
+
+---
+
+## ✅ **Step-by-Step Debugging**
+### **1️⃣ Check API Server Logs**
+Since the API server is restarting, you need to check its logs before it crashes. Run:  
+```sh
+sudo crictl logs $(sudo crictl ps -q --name kube-apiserver)
+```
+- Look for errors related to:
+  - **etcd connection issues** (`etcdserver: request timed out`)
+  - **certificate failures** (`x509: certificate signed by unknown authority`)
+  - **failed to bind to port 6443**
+
+---
+
+### **2️⃣ Check etcd Health**
+If etcd is failing, the API server will crash. Check etcd logs:  
+```sh
+sudo crictl logs $(sudo crictl ps -q --name etcd)
+```
+Then, verify etcd health:  
+```sh
+ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key --cacert=/etc/kubernetes/pki/etcd/ca.crt endpoint health
+```
+- If etcd is unhealthy, the API server will keep crashing.
+
+---
+
+### **3️⃣ Check kube-apiserver Manifest**
+Since this is a static pod, check its YAML configuration:  
+```sh
+cat /etc/kubernetes/manifests/kube-apiserver.yaml
+```
+Look for:
+- **Wrong etcd address** (`--etcd-servers=https://127.0.0.1:2379`)
+- **Missing or expired certificates**
+- **Incorrect port binding (`--secure-port=6443`)**
+
+---
+
+### **4️⃣ Check Kubelet Logs (Manages Static Pods)**
+If kubelet is failing to restart the API server properly, check its logs:  
+```sh
+sudo journalctl -u kubelet -f
+```
+- Look for **"failed to create pod sandbox"** or other errors.
+
+---
+
+### **5️⃣ Ensure Ports Are Free**
+Ensure no other service is blocking port **6443**:
+```sh
+sudo netstat -tulnp | grep 6443
+```
+If another service is using it, **stop that service** and restart the API server.
+
+---
+
+## 🔥 **Final Fix: Restart Components**
+After troubleshooting, restart everything:
+```sh
+sudo systemctl restart kubelet
+```
+Then check:
+```sh
+kubectl get pods -n kube-system
+```
+
+Let me know what you find! 🚀
