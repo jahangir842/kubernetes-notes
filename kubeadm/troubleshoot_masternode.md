@@ -13,6 +13,12 @@ The connection to the server 192.168.1.181:6443 was refused - did you specify th
 ### ✅ **How to Check etcd and Control Plane Without kubectl**
 Since Kubernetes is down, you need to check pods from the **container runtime** (`containerd` or `docker`).
 
+#### **Check Static Pods Manually**
+```sh
+sudo crictl ps -a
+```
+- If pods for kubernetes components are not running, check the logs.
+
 #### 1️⃣ **Check etcd Static Pod Manually**
 ```sh
 sudo crictl ps | grep etcd
