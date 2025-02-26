@@ -86,6 +86,19 @@ Before you begin the installation process, ensure you have the following:
 - Ensure that your firewall settings allow traffic on the necessary ports for Kubernetes.
 - Configure any additional settings as required for your specific environment.
 
+## Required Ports
+
+### Control Plane Node(s)
+- TCP 6443: Kubernetes API Server
+- TCP 2379-2380: etcd server client API
+- TCP 10250: Kubelet API
+- TCP 10259: kube-scheduler
+- TCP 10257: kube-controller-manager
+
+### Worker Node(s)
+- TCP 10250: Kubelet API
+- TCP 30000-32767: NodePort Services
+
 ## Additional Resources
 
 - [Kubernetes Official Documentation](https://kubernetes.io/docs/home/)
