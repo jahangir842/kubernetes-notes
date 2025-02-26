@@ -18,7 +18,8 @@ mlflow-k8s/
 │   ├── mlflow-config.yaml
 │   ├── mlflow-pvc.yaml
 │   ├── mlflow-deployment.yaml
-│   └── mlflow-service.yaml
+│   ├── mlflow-service.yaml
+│   └── mlflow-pv.yaml
 └── docs/
     └── production-setup.md
 ```
@@ -31,7 +32,12 @@ kubectl create namespace mlflow
 kubectl config set-context --current --namespace=mlflow
 ```
 
-2. Apply Kubernetes configurations:
+2. Create PersistentVolume (PV):
+```bash
+kubectl apply -f config/mlflow-pv.yaml
+```
+
+3. Apply Kubernetes configurations:
 ```bash
 kubectl apply -f config/mlflow-config.yaml
 kubectl apply -f config/mlflow-pvc.yaml
@@ -39,19 +45,20 @@ kubectl apply -f config/mlflow-deployment.yaml
 kubectl apply -f config/mlflow-service.yaml
 ```
 
-3. Verify deployment:
+4. Verify deployment:
 ```bash
 kubectl get pods -n mlflow
 kubectl get svc -n mlflow
 ```
 
-4. Access MLflow UI:
+5. Access MLflow UI:
 - URL: `http://<node-ip>:30005`
 
 ## Configuration Details
 
 ### Storage
 - Default artifact storage: Local PVC (10GB)
+  - `mlflow-pv.yaml`: Defines the PersistentVolume for MLflow artifact storage.
   - `mlflow-pvc.yaml`: Defines the PersistentVolumeClaim for MLflow artifact storage.
 - Database backend: SQLite (default)
 
