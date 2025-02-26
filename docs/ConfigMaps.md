@@ -1,8 +1,4 @@
-Below are detailed notes on **ConfigMaps** in Kubernetes, explaining what they are, their purpose, how they work, and practical examples of their usage. These notes are structured to provide a comprehensive understanding for someone new to Kubernetes or looking to deepen their knowledge.
-
----
-
-# **Notes on ConfigMaps in Kubernetes**
+# **ConfigMaps in Kubernetes**
 
 A **ConfigMap** in Kubernetes is a resource used to store configuration data in key-value pairs, decoupling configuration from application code. It allows you to manage settings, environment variables, or configuration files separately from container images, making applications more portable and easier to update.
 
