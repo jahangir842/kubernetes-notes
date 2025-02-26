@@ -12,8 +12,8 @@ You will set up a Kubernetes cluster using `kubeadm` with the following architec
 - **Operating System on VMs:** AlmaLinux 9
 - **Networking:** Flannel (or Calico for network policies)
 - **Container Runtime:** Containerd
-- **Pod Network CIDR:** `192.168.1.0/16`
-- **Kubernetes Version:** Latest stable
+- **Pod Network CIDR:** `172.16.0.0/16`
+- **Kubernetes Version:** Latest stable (v1.32)
 
 ---
 
