@@ -14,9 +14,16 @@
 
 ### 1. Create Namespace (Optional but recommended)
 ```bash
+# Create namespace
 kubectl create namespace nginx-demo
+
+# Set current context to the new namespace
 kubectl config set-context --current --namespace=nginx-demo
+
+# List all namespaces
+kubectl get namespaces
 ```
+
 
 ### 2. Create a Deployment with Resource Limits
 ```yaml
