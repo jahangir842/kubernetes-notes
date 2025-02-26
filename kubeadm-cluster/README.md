@@ -13,7 +13,7 @@ You will set up a Kubernetes cluster using `kubeadm` with the following architec
 - **Networking:** Flannel (or Calico for network policies)
 - **Container Runtime:** Containerd
 - **Pod Network CIDR:** `172.16.0.0/16`
-- **Kubernetes Version:** Latest stable (v1.32)
+- **Kubernetes Version:** Latest stable (v1.32) https://kubernetes.io/releases/
 
 ---
 
