@@ -1,6 +1,7 @@
 ## Cloud Native Computing Foundation (CNCF)
 
-- **Cloud Native Computing Foundation (CNCF)**: A major project under the Linux Foundation, CNCF accelerates the adoption of containers, microservices, and cloud-native apps.
+- **Cloud Native Computing Foundation (CNCF)**: A major project under the Linux Foundation, CNCF accelerates the adoption of containers, microservices, and cloud-native apps.  
+For more information, visit the CNCF website: [https://www.cncf.io](https://www.cncf.io)
 
 - **Project Categories**: Projects are categorized by maturity levels—**Sandbox**, **Incubating**, and **Graduated**. Over a dozen projects have achieved Graduated status, including **Kubernetes**, **Helm**, and **Prometheus**.
 
@@ -37,8 +38,9 @@ Explore the Cloud Native Computing Foundation (CNCF) landscape:
 ---
 
 ## Roots of Kubernetes
+The Kubernetes project was originally developed by Google and is now maintained by the Cloud Native Computing Foundation (CNCF). For more details, visit the official Kubernetes website: [https://kubernetes.io](https://kubernetes.io)
 
-The evolution of Kubernetes started from **Borg**, Google's very own distributed workload manager.
+The evolution of Kubernetes started from **Borg**, Google's very own distributed workload manager. Borg was designed to manage and schedule large-scale workloads across Google's vast infrastructure. It provided the foundation and inspiration for Kubernetes, incorporating many of the same principles and concepts. For more information on Borg, you can refer to the [Borg, Omega, and Kubernetes paper](https://research.google/pubs/pub43438/).
 
 **Cloud Native Computing Foundation (CNCF)** currently hosts the Kubernetes project, along with other popular cloud native projects, such as Argo, Cilium, Prometheus, Fluentd, etcd, CoreDNS, cri-o, containerd, Helm, Envoy, Istio, and Linkerd, just to name a few.
 
@@ -58,7 +60,7 @@ Kubernetes is highly inspired by the **Google Borg** system, a container and wor
 
 Kubernetes was started by Google and, with its v1.0 release in July 2015, Google **donated** it to the Cloud Native Computing Foundation (CNCF), one of the largest **sub-foundations** of the **Linux Foundation**.
 
-New Kubernetes versions are released in 4 month cycles. The current stable version is 1.29 (as of December 2023). https://kubernetes.io/releases/
+New Kubernetes versions are released in 4 month cycles. The current stable version is 1.32 (as of February 2025). https://kubernetes.io/releases/
 
 ---
 
@@ -129,13 +131,13 @@ Below is a list of popular container orchestration tools and services available 
    - An open-source container orchestration platform originally developed by Google and now managed by CNCF.
 
 5. **Marathon**  
-   - A container orchestration framework built on Apache Mesos and DC/OS for running containers at scale.
+   - A container orchestration framework built on **Apache Mesos** and DC/OS for running containers at scale.
 
 6. **Nomad**  
-   - A flexible container and workload orchestrator provided by HashiCorp, designed for multi-cloud environments.
+   - A flexible container and workload orchestrator provided by **HashiCorp**, designed for multi-cloud environments.
 
 7. **Docker Swarm**  
-   - A native container orchestrator built into Docker Engine, enabling clustering and scaling of Docker containers.
+   - A native container orchestrator built into **`**Docker Engine**, enabling clustering and scaling of Docker containers.
 
 ---
 
