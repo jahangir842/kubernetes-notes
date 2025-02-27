@@ -182,7 +182,7 @@ kubectl apply -f config/mlflow-service.yaml
     name: mlflow
     namespace: mlflow
   spec:
-    replicas: 1
+    replicas: 2
     selector:
       matchLabels:
         app: mlflow
@@ -193,28 +193,30 @@ kubectl apply -f config/mlflow-service.yaml
       spec:
         containers:
         - name: mlflow
-          image: python:3.9-slim
-          command: ["sh", "-c"]
+          image: ghcr.io/mlflow/mlflow:v2.20.3
+          command: ["mlflow", "server"]
           args:
-            - "pip install mlflow && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri file:///mlflow/storage --default-artifact-root file:///mlflow/storage/artifacts"
+            - "--host"
+            - "0.0.0.0"
+            - "--port"
+            - "5000"
+            - "--backend-store-uri"
+            - "file:///mlflow/storage"
+            - "--default-artifact-root"
+            - "file:///mlflow/storage/artifacts"
           ports:
           - containerPort: 5000
-          resources:
-            requests:
-              cpu: "250m"
-              memory: "512Mi"
-            limits:
-              cpu: "500m"
-              memory: "1Gi"
+          envFrom:
+          - configMapRef:
+              name: mlflow-config
           volumeMounts:
-          - mountPath: "/mlflow/storage"
-            name: mlflow-storage
+          - name: mlflow-storage
+            mountPath: /mlflow/storage
         volumes:
         - name: mlflow-storage
           persistentVolumeClaim:
             claimName: mlflow-pvc
   ```
-- **Notes**: No `nodeName` to allow scheduling on either worker.
 
 ### **Service**
 - **File**: `mlflow-service.yaml`
