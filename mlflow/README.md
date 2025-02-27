@@ -115,10 +115,11 @@ Configure `/mnt/data` on both worker nodes:
 ### **4. Apply Kubernetes Configurations**
 Deploy MLflow with persistent storage:
 ```bash
+kubectl apply -f config/mlflow-config.yaml
 kubectl apply -f config/mlflow-pvc.yaml
 kubectl apply -f config/mlflow-deployment.yaml
 kubectl apply -f config/mlflow-service.yaml
-# Optional: kubectl apply -f config/mlflow-config.yaml
+
 ```
  
 **Note:** you should not need to manually create the PV. Instead, the provisioner should dynamically create the PV when the PVC is requested.
