@@ -45,6 +45,15 @@ mlflow-k8s/
 
 ---
 
+## Note:
+MLflow typically runs as a single server instance with a shared backend store. Having multiple Pods sharing a ReadWriteOnce PVC on single node might lead to:
+- File Conflicts: Multiple MLflow instances writing to the same SQLite backend (file:///mlflow/storage) could corrupt it.
+- Performance: All load on worker-node2 reduces redundancy.
+- So use single node for mlflow.
+
+---
+
+
 ## **Quick Start**
 
 ### **1. Set Up Namespace**
@@ -183,7 +192,7 @@ kubectl apply -f config/mlflow-service.yaml
     name: mlflow
     namespace: mlflow
   spec:
-    replicas: 2
+    replicas: 1
     selector:
       matchLabels:
         app: mlflow
@@ -289,6 +298,7 @@ See `docs/production-setup.md` for details.
   ```
 
 ---
+
 
 ## **Cleanup**
 Remove all MLflow resources:
