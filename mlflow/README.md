@@ -1,7 +1,3 @@
-Your existing guide for deploying MLflow on Kubernetes is well-structured and covers the basics effectively, but it can be improved to incorporate the `local-path-provisioner` for persistent storage, align with your three-machine cluster (`master-node`, `worker-node1`, `worker-node2`), and address some gaps (e.g., explicit storage setup, verification steps, and production tweaks). Below, I’ve rewritten the guide, fixing omissions and integrating the `local-path-provisioner` while preserving your original structure where possible. This updated version is tailored to your current setup and serves as a reusable reference.
-
----
-
 # **MLflow on Kubernetes Deployment Guide**
 
 This guide provides instructions for deploying MLflow on Kubernetes with persistent storage using the `local-path-provisioner` from Rancher. It’s designed for a cluster with one master node (`master-node`) and two worker nodes (`worker-node1`, `worker-node2`), but is adaptable to other setups.
@@ -11,8 +7,8 @@ This guide provides instructions for deploying MLflow on Kubernetes with persist
 ## **Prerequisites**
 
 - **Kubernetes Cluster**: Version 1.16+ with:
-  - `master-node` (control plane, e.g., IP: `192.168.1.182`).
-  - `worker-node1` (worker, e.g., IP: `192.168.1.184`—replace with actual IP).
+  - `master-node` (control plane, e.g., IP: `192.168.1.181`).
+  - `worker-node1` (worker, e.g., IP: `192.168.1.182`.
   - `worker-node2` (worker, e.g., IP: `192.168.1.183`).
 - **kubectl**: Installed and configured on `master-node` with admin access.
 - **Docker Image Access**: Ability to pull MLflow images (e.g., from Docker Hub).
@@ -53,16 +49,44 @@ Deploy the storage provisioner for dynamic local storage:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.24/deploy/local-path-storage.yaml
 ```
+### **Verify Installation**
+Check the status of the local-path-provisioner:
+```bash
+kubectl get pods -n local-path-storage
+```
+Expected output:
+```plaintext
+NAME                                     READY   STATUS    RESTARTS   AGE
+local-path-provisioner-<hash>            1/1     Running   0          <time>
+```
+Verify the storage class:
+```bash
+kubectl get storageclass
+```
+Expected output:
+```plaintext
+NAME                   PROVISIONER               RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+local-path (default)   rancher.io/local-path     Delete          WaitForFirstConsumer   false                <time>
+```
+ 
+ 
+
+- **NAME**: The name of the storage class.
+- **PROVISIONER**: The provisioner responsible for creating volumes for this storage class.
+- **RECLAIMPOLICY**: The policy for reclaiming resources when a volume is deleted (e.g., `Delete` or `Retain`).
+- **VOLUMEBINDINGMODE**: The mode that determines when volume binding and dynamic provisioning should occur (e.g., `Immediate` or `WaitForFirstConsumer`).
+- **ALLOWVOLUMEEXPANSION**: Indicates whether the storage class allows volume expansion (`true` or `false`).
+- **AGE**: The age of the storage class since it was created.
 
 ### **3. Prepare Storage on Worker Nodes**
 Configure `/mnt/data` on both worker nodes:
 - **worker-node1** (replace IP as needed):
   ```bash
-  ssh adminit@192.168.1.184 "sudo mkdir -p /mnt/data && sudo chmod 777 /mnt/data && sudo chown nobody:nogroup /mnt/data"
+  ssh adminit@192.168.1.184 "sudo mkdir -p /mnt/data && sudo chmod 777 /mnt/data && sudo chown nobody:nobody /mnt/data"
   ```
 - **worker-node2**:
   ```bash
-  ssh adminit@192.168.1.183 "sudo mkdir -p /mnt/data && sudo chmod 777 /mnt/data && sudo chown nobody:nogroup /mnt/data"
+  ssh adminit@192.168.1.183 "sudo mkdir -p /mnt/data && sudo chmod 777 /mnt/data && sudo chown nobody:nobody /mnt/data"
   ```
 - **Update Provisioner**:
   ```bash
@@ -86,6 +110,8 @@ kubectl apply -f config/mlflow-deployment.yaml
 kubectl apply -f config/mlflow-service.yaml
 # Optional: kubectl apply -f config/mlflow-config.yaml
 ```
+ 
+**Note:** you should not need to manually create the PV. Instead, the provisioner should dynamically create the PV when the PVC is requested.
 
 ### **5. Verify Deployment**
 - **Storage**:
