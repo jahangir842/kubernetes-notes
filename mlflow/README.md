@@ -4,6 +4,16 @@ This guide provides instructions for deploying MLflow on Kubernetes with persist
 
 ---
 
+**Official docker Image:**
+
+```bash
+docker pull ghcr.io/mlflow/mlflow:v2.20.3
+```
+
+**More Info:** https://github.com/mlflow/mlflow/pkgs/container/mlflow
+
+---
+
 ## **Prerequisites**
 
 - **Kubernetes Cluster**: Version 1.16+ with:
