@@ -268,6 +268,12 @@ See `docs/production-setup.md` for details.
 ---
 
 ## **Monitoring**
+
+- **Check Everything**:
+  ```bash
+  kubectl get all -n mlflow -w
+  ```
+
 - **Deployment Status**:
   ```bash
   kubectl get pods -n mlflow -w
