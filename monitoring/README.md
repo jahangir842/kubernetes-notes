@@ -65,6 +65,77 @@ monitoring/
     └── setup-guide.md
 ```
 
+## Getting Started
+
+### Implementation Checklist
+- [ ] Verify cluster prerequisites
+- [ ] Check storage class availability
+- [ ] Create monitoring namespace
+- [ ] Apply storage configurations
+- [ ] Deploy Prometheus stack
+- [ ] Deploy Grafana
+- [ ] Configure alerting (optional)
+- [ ] Import dashboards
+- [ ] Verify metrics collection
+
+### Deployment Order
+```bash
+# 1. Create namespace
+kubectl create namespace monitoring
+kubectl config set-context --current --namespace=monitoring
+
+
+# 2. Create storage resources
+kubectl apply -f storage/monitoring-storage.yaml
+
+# 3. Deploy Prometheus stack in order
+kubectl apply -f prometheus/prometheus-rbac.yaml
+kubectl apply -f prometheus/rules/
+kubectl apply -f prometheus/prometheus-configmap.yaml
+kubectl apply -f prometheus/prometheus-deployment.yaml
+kubectl apply -f prometheus/prometheus-service.yaml
+
+# 4. Deploy Grafana
+kubectl apply -f grafana/
+
+# 5. Verify all deployments
+kubectl get all -n monitoring
+```
+
+### Verification Steps
+1. Check PVC status:
+   ```bash
+   kubectl get pvc -n monitoring
+   ```
+
+2. Verify pod status:
+   ```bash
+   kubectl get pods -n monitoring
+   kubectl describe pods -n monitoring
+   ```
+
+3. Check service endpoints:
+   ```bash
+   kubectl get endpoints -n monitoring
+   ```
+
+4. Test service access:
+   ```bash
+   # Get node IP
+   kubectl get nodes -o wide
+   
+   # Test endpoints
+   curl http://<node-ip>:30090 # Prometheus
+   curl http://<node-ip>:30300 # Grafana
+   ```
+
+### Post-Installation Tasks
+1. Change default Grafana password
+2. Import essential dashboards
+3. Configure alerting rules
+4. Test metric collection
+5. Setup backup schedules
+
 ## Installation Guide
 
 ### 1. Create Storage Resources
@@ -79,6 +150,7 @@ kubectl apply -f storage/monitoring-storage.yaml
 ```bash
 # Create monitoring namespace
 kubectl create namespace monitoring
+kubectl config set-context --current --namespace=monitoring
 
 # Apply RBAC rules
 kubectl apply -f prometheus/prometheus-rbac.yaml
