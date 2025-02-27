@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mlflow
-        image: docker pull ghcr.io/mlflow/mlflow:v2.20.3
+        image: ghcr.io/mlflow/mlflow:v2.20.3
         ports:
         - containerPort: 5000
         envFrom:
