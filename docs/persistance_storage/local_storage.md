@@ -44,7 +44,7 @@ Create a directory on `worker-node2` to store persistent data and set appropriat
 ---
 
 ### **Step 2: Install local-path-provisioner**
-Deploy the `local-path-provisioner` to enable dynamic provisioning of local storage across your cluster, including `worker-node2`.
+Deploy the `local-path-provisioner` to enable dynamic provisioning of local storage **across your cluster**, including `worker-node2`.
 
 - **Apply the Manifest**:
   From `master-node`:
