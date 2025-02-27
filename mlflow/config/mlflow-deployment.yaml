@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mlflow
+  namespace: mlflow
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: mlflow
@@ -15,6 +16,16 @@ spec:
       containers:
       - name: mlflow
         image: ghcr.io/mlflow/mlflow:v2.20.3
+        command: ["mlflow", "server"]
+        args:
+          - "--host"
+          - "0.0.0.0"
+          - "--port"
+          - "5000"
+          - "--backend-store-uri"
+          - "file:///mlflow/storage"
+          - "--default-artifact-root"
+          - "file:///mlflow/storage/artifacts"
         ports:
         - containerPort: 5000
         envFrom:
@@ -22,7 +33,7 @@ spec:
             name: mlflow-config
         volumeMounts:
         - name: mlflow-storage
-          mountPath: /mlflow
+          mountPath: /mlflow/storage
       volumes:
       - name: mlflow-storage
         persistentVolumeClaim:
