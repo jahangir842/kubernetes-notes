@@ -2,6 +2,37 @@
 
 A comprehensive guide and collection of resources for learning Kubernetes using K3s.
 
+## Introduction
+
+K3s is a lightweight, certified Kubernetes distribution designed for resource-constrained environments and edge computing. It offers several advantages:
+
+### What is K3s?
+
+- **Lightweight**: A single binary less than 100MB that includes all Kubernetes master and worker components
+- **Production-ready**: Fully CNCF certified Kubernetes distribution
+- **Simple to install**: Single command installation process
+- **Low resource usage**: Requires only 512MB RAM and 200MB disk space per node
+- **Production grade**: Suitable for everything from development to production environments
+
+### Key Features
+
+- Built-in containerd runtime
+- Integrated SQLite database (can be replaced with etcd or other databases)
+- Automatic TLS management
+- Built-in service load balancer (ServiceLB)
+- Local storage provider
+- Helm controller for easy application deployment
+- Simplified installation of common applications
+
+### Use Cases
+
+- Edge computing and IoT
+- Development environments
+- CI/CD pipelines
+- Resource-constrained environments
+- Learning and education
+- Small to medium production deployments
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
