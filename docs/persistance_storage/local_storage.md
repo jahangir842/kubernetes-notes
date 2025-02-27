@@ -29,7 +29,7 @@ Create a directory on `worker-node2` to store persistent data and set appropriat
   ```bash
   sudo mkdir -p /mnt/data
   sudo chmod 777 /mnt/data  # Liberal permissions for simplicity; adjust as needed
-  sudo chown nobody:nogroup /mnt/data  # Matches local-path-provisioner defaults
+  sudo chown nobody:nobody /mnt/data  # Matches local-path-provisioner defaults
   ```
 - **Verify**:
   ```bash
