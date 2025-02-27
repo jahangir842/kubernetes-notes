@@ -75,6 +75,11 @@ Deploy the `local-path-provisioner` to enable dynamic provisioning of local stor
 - **Verify**:
   ```bash
   kubectl get storageclass local-path
+  ```
+
+The output should be like:
+
+  ```bash
   # Output: NAME        PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      AGE
   #         local-path  rancher.io/local-path   Delete          WaitForFirstConsumer   1m
   kubectl get pod -n local-path-storage
