@@ -1,91 +1,146 @@
-# K3s Cluster
+# K3s Kubernetes Learning Project
 
-This repository contains notes and configurations for setting up and managing a K3s cluster.
+A comprehensive guide and collection of resources for learning Kubernetes using K3s.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
+- [Getting Started](#getting-started)
+- [Cluster Setup](#cluster-setup)
+- [Basic Operations](#basic-operations)
+- [Practice Exercises](#practice-exercises)
+- [Monitoring](#monitoring)
+- [Common Patterns](#common-patterns)
 - [Troubleshooting](#troubleshooting)
-- [Resources](#resources)
 
-## Introduction
+## Getting Started
 
-K3s is a lightweight Kubernetes distribution designed for resource-constrained environments. It is easy to install and ideal for edge, IoT, and CI/CD environments.
+### Prerequisites
 
-## Prerequisites
+- Linux machine with at least 2GB RAM
+- Access to terminal with sudo privileges
+- Basic understanding of containers
+- kubectl CLI tool (installed automatically with K3s)
 
-Before setting up a K3s cluster, ensure you have the following:
+### Quick Start
 
-- A Linux-based operating system (e.g., Ubuntu, CentOS)
-- At least 1 GB of RAM and 1 CPU core per node
-- Sudo or root access on all nodes
-- Network connectivity between nodes
+1. **Install K3s Server (Master Node)**
 
-## Installation
+   ```bash
+   curl -sfL https://get.k3s.io | sh -
+   # Wait ~30 seconds for the installation to complete
+   ```
 
-Follow these steps to install K3s on your nodes:
+2. **Verify Installation**
 
-1. **Download and install K3s:**
-    ```sh
-    curl -sfL https://get.k3s.io | sh -
-    ```
+   ```bash
+   sudo k3s kubectl get nodes
+   ```
 
-2. **Verify the installation:**
-    ```sh
-    sudo k3s kubectl get nodes
-    ```
+3. **Set up kubectl access for your user**
+   ```bash
+   mkdir ~/.kube
+   sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+   sudo chown $USER:$USER ~/.kube/config
+   ```
 
-3. **Join additional nodes to the cluster:**
-    ```sh
-    # On the master node, get the join token
-    sudo cat /var/lib/rancher/k3s/server/node-token
+## Cluster Setup
 
-    # On the worker nodes, run the following command
-    curl -sfL https://get.k3s.io | K3S_URL=https://<MASTER_IP>:6443 K3S_TOKEN=<NODE_TOKEN> sh -
-    ```
+### Single-Node Development Setup
 
-## Configuration
+For local development and learning, a single-node setup is recommended:
 
-Configuration files for K3s are located in `/etc/rancher/k3s/`. You can customize the cluster by editing these files.
+1. **Verify your node is running:**
 
-## Usage
+   ```bash
+   kubectl get nodes
+   kubectl get pods -A
+   ```
 
-Use `kubectl` to interact with your K3s cluster. Here are some common commands:
+2. **Access your cluster:**
 
-- **Get cluster information:**
-    ```sh
-    sudo k3s kubectl cluster-info
-    ```
+   ```bash
+   # Set up kubectl config
+   mkdir -p ~/.kube
+   sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+   sudo chown $USER:$USER ~/.kube/config
+   export KUBECONFIG=~/.kube/config
+   ```
 
-- **List all nodes:**
-    ```sh
-    sudo k3s kubectl get nodes
-    ```
+3. **Test the setup:**
 
-- **Deploy an application:**
-    ```sh
-    sudo k3s kubectl apply -f <your-app.yaml>
-    ```
+   ```bash
+   # Deploy a test application
+   kubectl create deployment nginx --image=nginx
+   kubectl expose deployment nginx --port=80 --type=NodePort
+
+   # Get the assigned port
+   kubectl get svc nginx
+   ```
+
+### Resource Management
+
+Since you're running on a single machine, be mindful of resource usage:
+
+- Monitor resource usage: `kubectl top nodes` (requires metrics-server)
+- Set resource limits in your deployments
+- Clean up unused resources: `kubectl delete pod,deployment,svc --all`
+
+## Basic Operations
+
+### Common kubectl Commands
+
+```bash
+# View all resources
+kubectl get all --all-namespaces
+
+# Deploy an application
+kubectl apply -f manifests/
+
+# View logs
+kubectl logs <pod-name>
+
+# Execute commands in pods
+kubectl exec -it <pod-name> -- /bin/sh
+```
+
+## Practice Exercises
+
+This repository includes several practice exercises:
+
+1. [Basic Pod Deployment](./practice/01-basic-pod/)
+2. [ConfigMaps and Secrets](./practice/02-configs/)
+3. [Service Discovery](./practice/03-services/)
+4. [Persistent Storage](./practice/04-storage/)
+
+## Monitoring
+
+We use the following tools for monitoring:
+
+- Prometheus for metrics collection
+- Grafana for visualization
+- See [monitoring setup guide](./monitoring/README.md)
+
+## Common Patterns
+
+- [Blue-Green Deployments](./patterns/blue-green/)
+- [Canary Releases](./patterns/canary/)
+- [Sidecar Patterns](./patterns/sidecar/)
 
 ## Troubleshooting
 
-If you encounter issues, check the logs for more information:
+Common issues and solutions:
 
-- **K3s service logs:**
-    ```sh
-    sudo journalctl -u k3s
-    ```
+1. **Pod in CrashLoopBackOff**
 
-- **K3s agent logs:**
-    ```sh
-    sudo journalctl -u k3s-agent
-    ```
+   ```bash
+   kubectl describe pod <pod-name>
+   kubectl logs <pod-name> --previous
+   ```
 
-## Resources
+2. **Service Discovery Issues**
+   ```bash
+   kubectl get endpoints
+   kubectl describe service <service-name>
+   ```
 
-- [K3s Documentation](https://rancher.com/docs/k3s/latest/en/) https://rancher.com/docs/k3s/latest/en/
-- [Kubernetes Documentation](https://kubernetes.io/docs/) https://kubernetes.io/docs/
+For more examples and practice materials, check the `practice/` directory.
