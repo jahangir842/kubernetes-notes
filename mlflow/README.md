@@ -1,151 +1,309 @@
-# MLflow on Kubernetes Deployment Guide
+Your existing guide for deploying MLflow on Kubernetes is well-structured and covers the basics effectively, but it can be improved to incorporate the `local-path-provisioner` for persistent storage, align with your three-machine cluster (`master-node`, `worker-node1`, `worker-node2`), and address some gaps (e.g., explicit storage setup, verification steps, and production tweaks). Below, I’ve rewritten the guide, fixing omissions and integrating the `local-path-provisioner` while preserving your original structure where possible. This updated version is tailored to your current setup and serves as a reusable reference.
 
-This repository contains configuration files and instructions for deploying MLflow on Kubernetes.
+---
 
-## Prerequisites
+# **MLflow on Kubernetes Deployment Guide**
 
-- Kubernetes cluster (v1.16+)
-- kubectl CLI tool
-- Access to pull MLflow Docker image
-- Storage provisioner for PersistentVolumeClaims
+This guide provides instructions for deploying MLflow on Kubernetes with persistent storage using the `local-path-provisioner` from Rancher. It’s designed for a cluster with one master node (`master-node`) and two worker nodes (`worker-node1`, `worker-node2`), but is adaptable to other setups.
 
-## Directory Structure
+---
+
+## **Prerequisites**
+
+- **Kubernetes Cluster**: Version 1.16+ with:
+  - `master-node` (control plane, e.g., IP: `192.168.1.182`).
+  - `worker-node1` (worker, e.g., IP: `192.168.1.184`—replace with actual IP).
+  - `worker-node2` (worker, e.g., IP: `192.168.1.183`).
+- **kubectl**: Installed and configured on `master-node` with admin access.
+- **Docker Image Access**: Ability to pull MLflow images (e.g., from Docker Hub).
+- **Storage**: `local-path-provisioner` for dynamic local storage provisioning.
+- **SSH Access**: To worker nodes for storage preparation.
+
+---
+
+## **Directory Structure**
 
 ```plaintext
 mlflow-k8s/
 ├── README.md
 ├── config/
-│   ├── mlflow-config.yaml
 │   ├── mlflow-pvc.yaml
 │   ├── mlflow-deployment.yaml
 │   ├── mlflow-service.yaml
-│   └── mlflow-pv.yaml
+│   └── mlflow-config.yaml (optional)
 └── docs/
     └── production-setup.md
 ```
 
-## Quick Start
-
-1. Create namespace for MLflow:
-```bash
-kubectl create namespace mlflow
-kubectl config set-context --current --namespace=mlflow
-```
-
-2. Create PersistentVolume (PV):
-```bash
-kubectl apply -f config/mlflow-pv.yaml
-```
-
-3. Apply Kubernetes configurations:
-```bash
-kubectl apply -f config/mlflow-config.yaml
-kubectl apply -f config/mlflow-pvc.yaml
-kubectl apply -f config/mlflow-deployment.yaml
-kubectl apply -f config/mlflow-service.yaml
-```
-
-4. Verify deployment:
-```bash
-kubectl get pods -n mlflow
-kubectl get svc -n mlflow
-```
-
-5. Access MLflow UI:
-- URL: `http://<node-ip>:30005`
-
-## Configuration Details
-
-### Storage
-- Default artifact storage: Local PVC (10GB)
-  - `mlflow-pv.yaml`: Defines the PersistentVolume for MLflow artifact storage.
-  - `mlflow-pvc.yaml`: Defines the PersistentVolumeClaim for MLflow artifact storage.
-- Database backend: SQLite (default)
-
-### Resources
-- CPU Request: 250m
-- CPU Limit: 500m
-- Memory Request: 512Mi
-- Memory Limit: 1Gi
-
-### Network
-- Service Type: NodePort
-- Port: 5000
-- NodePort: 30005
-
-## Production Considerations
-
-For production deployments, consider:
-- Using external database (MySQL/PostgreSQL)
-- Implementing authentication
-- Setting up cloud storage for artifacts
-- Configuring Ingress
-- Enabling SSL/TLS
-- Implementing backup strategy
-
-## Monitoring
-
-Check deployment status:
-```bash
-kubectl get pods -n mlflow -w
-```
-
-View logs:
-```bash
-kubectl logs -l app=mlflow -n mlflow -f
-```
-
-## Cleanup
-
-Remove all MLflow resources:
-```bash
-kubectl delete namespace mlflow
-```
-
-## Additional Resources
-
-- [MLflow Documentation](https://www.mlflow.org/docs/latest/index.html)
-- [Kubernetes Documentation](https://kubernetes.io/docs/)
-- [MLflow Docker Image](https://github.com/mlflow/mlflow/pkgs/container/mlflow)
-
-## Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-
+*Note*: Removed `mlflow-pv.yaml` as we’ll use dynamic provisioning instead of static PVs.
 
 ---
 
-# Production Setup for MLflow on Kubernetes
+## **Quick Start**
 
-For production deployments, consider the following:
+### **1. Set Up Namespace**
+Create and set the `mlflow` namespace:
+```bash
+kubectl create namespace mlflow --dry-run=client -o yaml | kubectl apply -f -
+kubectl config set-context --current --namespace=mlflow
+```
 
-## External Database
+### **2. Install local-path-provisioner**
+Deploy the storage provisioner for dynamic local storage:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.24/deploy/local-path-storage.yaml
+```
 
-Use an external database like MySQL or PostgreSQL instead of the default SQLite.
+### **3. Prepare Storage on Worker Nodes**
+Configure `/mnt/data` on both worker nodes:
+- **worker-node1** (replace IP as needed):
+  ```bash
+  ssh adminit@192.168.1.184 "sudo mkdir -p /mnt/data && sudo chmod 777 /mnt/data && sudo chown nobody:nogroup /mnt/data"
+  ```
+- **worker-node2**:
+  ```bash
+  ssh adminit@192.168.1.183 "sudo mkdir -p /mnt/data && sudo chmod 777 /mnt/data && sudo chown nobody:nogroup /mnt/data"
+  ```
+- **Update Provisioner**:
+  ```bash
+  kubectl edit configmap local-path-config -n local-path-storage
+  ```
+  Change:
+  ```yaml
+  data:
+    path: "/mnt/data"
+  ```
+  Restart:
+  ```bash
+  kubectl rollout restart deployment local-path-provisioner -n local-path-storage
+  ```
 
-## Authentication
+### **4. Apply Kubernetes Configurations**
+Deploy MLflow with persistent storage:
+```bash
+kubectl apply -f config/mlflow-pvc.yaml
+kubectl apply -f config/mlflow-deployment.yaml
+kubectl apply -f config/mlflow-service.yaml
+# Optional: kubectl apply -f config/mlflow-config.yaml
+```
 
-Implement authentication to secure access to the MLflow UI and API.
+### **5. Verify Deployment**
+- **Storage**:
+  ```bash
+  kubectl get pvc -n mlflow
+  # Expected: NAME        STATUS   VOLUME            CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+  #          mlflow-pvc  Bound    pvc-<hash>        10Gi       RWO            local-path     1m
+  ```
+- **Pods**:
+  ```bash
+  kubectl get pods -n mlflow -o wide
+  ```
+- **Service**:
+  ```bash
+  kubectl get svc -n mlflow
+  ```
 
-## Cloud Storage
+### **6. Access MLflow UI**
+- **Port Forward** (temporary):
+  ```bash
+  kubectl port-forward -n mlflow svc/mlflow-service 5000:5000
+  ```
+- Open `http://localhost:5000` in your browser.
+- **NodePort** (if configured): `http://<worker-node-ip>:30005`.
 
-Configure cloud storage (e.g., AWS S3, Google Cloud Storage) for storing artifacts.
+---
 
-## Ingress
+## **Configuration Details**
 
-Set up an Ingress resource to manage external access to the MLflow service.
+### **Storage**
+- **Persistent Volume Claim (PVC)**:
+  - **File**: `mlflow-pvc.yaml`
+  - **Content**:
+    ```yaml
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: mlflow-pvc
+      namespace: mlflow
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: local-path
+    ```
+  - **Provisioner**: `rancher.io/local-path` dynamically creates a 10Gi PV on the node where the Pod runs (e.g., `/mnt/data/pvc-<hash>`).
+- **Backend**: SQLite (default, stored in PVC).
 
-## SSL/TLS
+### **Deployment**
+- **File**: `mlflow-deployment.yaml`
+- **Content**:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mlflow
+    namespace: mlflow
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: mlflow
+    template:
+      metadata:
+        labels:
+          app: mlflow
+      spec:
+        containers:
+        - name: mlflow
+          image: python:3.9-slim
+          command: ["sh", "-c"]
+          args:
+            - "pip install mlflow && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri file:///mlflow/storage --default-artifact-root file:///mlflow/storage/artifacts"
+          ports:
+          - containerPort: 5000
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          volumeMounts:
+          - mountPath: "/mlflow/storage"
+            name: mlflow-storage
+        volumes:
+        - name: mlflow-storage
+          persistentVolumeClaim:
+            claimName: mlflow-pvc
+  ```
+- **Notes**: No `nodeName` to allow scheduling on either worker.
 
-Enable SSL/TLS to encrypt data in transit.
+### **Service**
+- **File**: `mlflow-service.yaml`
+- **Content**:
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: mlflow-service
+    namespace: mlflow
+  spec:
+    selector:
+      app: mlflow
+    ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30005
+    type: NodePort
+  ```
 
-## Backup Strategy
+### **Optional ConfigMap**
+- **File**: `mlflow-config.yaml`
+- **Content**:
+  ```yaml
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: mlflow-config
+    namespace: mlflow
+  data:
+    BACKEND_STORE_URI: "file:///mlflow/storage"
+    ARTIFACT_ROOT: "file:///mlflow/storage/artifacts"
+  ```
 
-Implement a backup strategy for the database and artifacts to prevent data loss.
+---
 
-Refer to the official MLflow and Kubernetes documentation for detailed instructions on these configurations.
+## **Production Considerations**
+- **External Database**: Use MySQL/PostgreSQL (e.g., via Helm chart for MySQL).
+- **Authentication**: Add OAuth or basic auth (configure via MLflow plugins).
+- **Cloud Storage**: Replace local storage with S3/GCS for artifacts.
+- **Ingress**: Use an Ingress controller (e.g., NGINX) for domain-based access.
+- **SSL/TLS**: Enable with cert-manager or manual certificates.
+- **Backup**: Use Velero for PVC and database backups.
+- **Scaling**: Increase `replicas` and adjust resource limits.
+
+See `docs/production-setup.md` for details.
+
+---
+
+## **Monitoring**
+- **Deployment Status**:
+  ```bash
+  kubectl get pods -n mlflow -w
+  ```
+- **Logs**:
+  ```bash
+  kubectl logs -n mlflow -l app=mlflow -f
+  ```
+- **Storage**:
+  ```bash
+  ssh adminit@<node-ip> "ls -l /mnt/data"
+  ```
+
+---
+
+## **Cleanup**
+Remove all MLflow resources:
+```bash
+kubectl delete -f config/mlflow-service.yaml
+kubectl delete -f config/mlflow-deployment.yaml
+kubectl delete -f config/mlflow-pvc.yaml
+# Optional: kubectl delete -f config/mlflow-config.yaml
+```
+
+Remove provisioner (if no longer needed):
+```bash
+kubectl delete -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.24/deploy/local-path-storage.yaml
+```
+
+---
+
+## **Troubleshooting**
+- **PVC Issues**:
+  ```bash
+  kubectl describe pvc mlflow-pvc -n mlflow
+  ```
+- **Pod Issues**:
+  ```bash
+  kubectl describe pod -n mlflow -l app=mlflow
+  ```
+- **Provisioner Logs**:
+  ```bash
+  kubectl logs -n local-path-storage -l app=local-path-provisioner
+  ```
+
+---
+
+## **Additional Resources**
+- [MLflow Docs](https://www.mlflow.org/docs/latest/index.html)
+- [Kubernetes Docs](https://kubernetes.io/docs/)
+- [local-path-provisioner](https://github.com/rancher/local-path-provisioner)
+
+---
+
+# **Production Setup for MLflow on Kubernetes**
+
+For production, enhance the setup:
+- **External Database**: Deploy MySQL/PostgreSQL; update `--backend-store-uri` (e.g., `mysql://user:pass@host/db`).
+- **Authentication**: Use MLflow plugins or an Ingress with auth middleware.
+- **Cloud Storage**: Configure S3/GCS (e.g., `--default-artifact-root s3://bucket/`).
+- **Ingress**: Deploy NGINX Ingress with a domain (e.g., `mlflow.example.com`).
+- **SSL/TLS**: Use cert-manager for automated certificates.
+- **Backup**: Implement Velero for PVC and DB backups.
+
+Refer to MLflow and Kubernetes documentation for specifics.
+
+---
+
+## **Fixes and Improvements**
+- **Removed Static PV**: Replaced `mlflow-pv.yaml` with dynamic provisioning via `local-path`.
+- **All Nodes**: Added storage prep for both workers, removing `worker-node2` bias.
+- **Namespace Handling**: Made namespace creation idempotent.
+- **Verification**: Expanded checks (PVC, Pod, Service).
+- **Resources**: Kept your CPU/memory settings, added clarity.
+- **Production**: Consolidated and aligned with main guide.
+
+Save these files in your `mlflow-k8s/config/` directory and follow the steps for a reliable MLflow deployment! Let me know if you need further adjustments! 🚀
