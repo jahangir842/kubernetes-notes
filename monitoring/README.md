@@ -196,21 +196,35 @@ Key points about this configuration:
 - **ReclaimPolicy**: `Delete` - Storage is deleted when PVC is deleted
 - **VolumeBindingMode**: `WaitForFirstConsumer` - PV is created only when a pod using the PVC is scheduled
 
-### Finding Local-Path Storage Location
-To find your storage:
-
-```bash
-# 1. Find which node your pod is scheduled on
-kubectl get pod <pod-name> -o wide
-
-# 2. SSH into that node and check the local-path directory
-ls /var/lib/rancher/k3s/storage/
-
-# 3. Find your specific PV directory
-ls /var/lib/rancher/k3s/storage/pvc-*
-```
 
 Important: Due to the `WaitForFirstConsumer` binding mode, PVs will only be created after pods are scheduled.
+
+## Storage Management
+
+### When Data Exceeds PVC Capacity
+When data approaches or exceeds PVC capacity:
+1. Pod will fail to write new data
+2. Prometheus/Grafana may become read-only or crash
+3. No automatic expansion available with local-path storage
+
+### Prevention and Solutions:
+```bash
+# Monitor PV usage
+kubectl get pv -o custom-columns=NAME:.metadata.name,CAPACITY:.spec.capacity.storage,USED:.status.capacity
+
+# Check actual usage on node
+ssh <node-name> "df -h /var/lib/rancher/k3s/storage/pvc-*"
+
+# Implement cleanup:
+- Set Prometheus retention in prometheus-configmap.yaml
+- Enable Grafana's built-in cleanup jobs
+- Monitor storage alerts
+```
+
+### Emergency Actions:
+1. Temporary: Delete old data
+2. Long-term: Migrate to new PVC
+3. Prevention: Set up monitoring alerts
 
 ## Maintenance
 
