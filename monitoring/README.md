@@ -3,7 +3,7 @@
 ## Step 1: Prerequisites Verification
 ```bash
 # Check Kubernetes version
-kubectl version --short
+kubectl version
 
 # Verify cluster access
 kubectl cluster-info
@@ -20,6 +20,10 @@ cd monitoring
 # Create namespace and switch context
 kubectl create namespace monitoring
 kubectl config set-context --current --namespace=monitoring
+
+
+# Verify namespace and context
+kubectl config get-contexts
 ```
 
 ## Step 3: Storage Setup
@@ -195,3 +199,52 @@ kubectl set image deployment/prometheus prometheus=prom/prometheus:v2.45.0
 kubectl set image deployment/grafana grafana=grafana/grafana:9.5.3
 kubectl set image deployment/alertmanager alertmanager=prom/alertmanager:v0.25.0
 ```
+
+## Cleanup Instructions
+
+### Option 1: Delete Everything in One Command
+```bash
+# Delete all resources in monitoring namespace
+kubectl delete namespace monitoring
+```
+
+### Option 2: Delete Components Individually
+Follow this order to safely remove components:
+
+```bash
+# 1. Delete Grafana
+kubectl delete -f grafana/
+kubectl delete pvc grafana-pvc -n monitoring
+
+# 2. Delete AlertManager
+kubectl delete -f alertmanager/
+
+# 3. Delete Prometheus
+kubectl delete -f prometheus/prometheus-service.yaml
+kubectl delete -f prometheus/prometheus-deployment.yaml
+kubectl delete -f prometheus/prometheus-configmap.yaml
+kubectl delete -f prometheus/rules/
+kubectl delete -f prometheus/prometheus-rbac.yaml
+kubectl delete pvc prometheus-pvc -n monitoring
+
+# 4. Delete Storage Resources
+kubectl delete -f storage/monitoring-storage.yaml
+
+# 5. Finally, delete the namespace
+kubectl delete namespace monitoring
+
+# 6. Verify cleanup
+kubectl get all -n monitoring
+kubectl get pvc -n monitoring
+kubectl get configmaps -n monitoring
+kubectl get secrets -n monitoring
+```
+
+### Optional: Clean Local Storage
+If using local-path provisioner, clean up the storage directories on your nodes:
+```bash
+# On each node where PVs were created (requires SSH access):
+sudo rm -rf /var/lib/rancher/k3s/storage/pvc-*
+```
+
+Note: Replace the storage path according to your local-path provisioner configuration.
