@@ -33,10 +33,35 @@ The monitoring stack uses persistent storage for:
 - Prometheus data retention
 - Grafana dashboards and settings
 
+### Current Storage Configuration
+Using the `local-path` provisioner from Rancher:
+```bash
+# Verify storage class
+kubectl get sc
+NAME         PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE
+local-path   rancher.io/local-path   Delete          WaitForFirstConsumer
+```
+
 Storage requirements:
 - Prometheus: 50Gi (configurable)
 - Grafana: 10Gi (configurable)
-- StorageClass: standard (modify based on your cluster)
+- StorageClass: local-path
+
+No additional storage class setup is needed as `local-path` is already available.
+
+### Deployment Order
+```bash
+# 1. Create namespace
+kubectl create namespace monitoring
+
+# 2. Apply storage configuration
+kubectl apply -f storage/monitoring-storage.yaml
+
+# Verify PVC creation
+kubectl get pvc -n monitoring
+```
+
+
 
 ## Directory Structure
 
@@ -84,8 +109,9 @@ monitoring/
 kubectl create namespace monitoring
 kubectl config set-context --current --namespace=monitoring
 
-
-# 2. Create storage resources
+# 2. Setup storage
+# Choose appropriate storage class setup (see Storage Configuration section)
+kubectl apply -f storage/storage-class.yaml  # If using local storage
 kubectl apply -f storage/monitoring-storage.yaml
 
 # 3. Deploy Prometheus stack in order
