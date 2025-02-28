@@ -176,6 +176,42 @@ kubectl get endpoints
 kubectl get svc -o wide
 ```
 
+## Troubleshooting Storage
+
+### Storage Class Configuration
+The cluster uses the `local-path` StorageClass which has the following configuration:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-path
+provisioner: rancher.io/local-path
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+```
+
+Key points about this configuration:
+- **Provisioner**: `rancher.io/local-path` - Manages local storage on nodes
+- **ReclaimPolicy**: `Delete` - Storage is deleted when PVC is deleted
+- **VolumeBindingMode**: `WaitForFirstConsumer` - PV is created only when a pod using the PVC is scheduled
+
+### Finding Local-Path Storage Location
+To find your storage:
+
+```bash
+# 1. Find which node your pod is scheduled on
+kubectl get pod <pod-name> -o wide
+
+# 2. SSH into that node and check the local-path directory
+ls /var/lib/rancher/k3s/storage/
+
+# 3. Find your specific PV directory
+ls /var/lib/rancher/k3s/storage/pvc-*
+```
+
+Important: Due to the `WaitForFirstConsumer` binding mode, PVs will only be created after pods are scheduled.
+
 ## Maintenance
 
 ### Backup
@@ -248,3 +284,20 @@ sudo rm -rf /var/lib/rancher/k3s/storage/pvc-*
 ```
 
 Note: Replace the storage path according to your local-path provisioner configuration.
+
+## Storage Information
+
+### Local-Path Storage Location
+By default, Rancher's local-path provisioner creates persistent volumes in:
+```bash
+# On each node:
+/var/lib/rancher/k3s/storage/
+
+# The full path to a specific PV will look like:
+/var/lib/rancher/k3s/storage/pvc-{UUID}/
+
+# To list all local PVs:
+ls /var/lib/rancher/k3s/storage/
+```
+
+Note: The storage path might be different if you've customized the local-path provisioner configuration.
