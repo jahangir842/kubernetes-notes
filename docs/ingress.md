@@ -1,8 +1,4 @@
-Below is a revised **General Guide to Setting Up Ingress in Kubernetes**, updated to include the differences between the NGINX Ingress Controller manifests for bare-metal and cloud environments (e.g., `baremetal/deploy.yaml` vs. `cloud/deploy.yaml`), as discussed. This guide remains broadly applicable to any Kubernetes cluster, including your setup with one master and two worker nodes, and provides a clear, reusable process for exposing pods via Ingress.
-
----
-
-### **General Guide: Setting Up Ingress in Kubernetes**
+### **Setting Up Ingress in Kubernetes**
 
 #### **Overview**
 - **Purpose**: Ingress manages external HTTP/HTTPS access to pods by defining routing rules (e.g., paths or domains), offering a single entry point for multiple services with features like load balancing and TLS termination.
