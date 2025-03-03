@@ -61,6 +61,7 @@ Create and set the `mlflow` namespace:
 ```bash
 kubectl create namespace mlflow --dry-run=client -o yaml | kubectl apply -f -
 kubectl config set-context --current --namespace=mlflow
+kubectl config get-contexts
 ```
 
 ### **2. Install local-path-provisioner**
