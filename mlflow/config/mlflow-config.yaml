@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mlflow-config
-  namespace: mlflow
-data:
-  MLFLOW_TRACKING_URI: http://0.0.0.0:5000
-  BACKEND_STORE_URI: "file:///mlflow/storage"
-  ARTIFACT_ROOT: "file:///mlflow/storage/artifacts"
