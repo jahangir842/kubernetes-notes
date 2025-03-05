@@ -3,7 +3,7 @@ To restore an SQL backup to your PostgreSQL pod in your MLflow Kubernetes setup,
 ---
 
 ### Prerequisites
-1. **SQL Backup File**: Ensure you have your SQL backup file (e.g., `backup.sql`) available on your local machine or a location accessible to your Kubernetes cluster.
+1. **SQL Backup File**: Ensure you have your SQL backup file (e.g., `backup_mlflow.dump`) available on your local machine or a location accessible to your Kubernetes cluster.
 2. **kubectl**: Ensure `kubectl` is configured to interact with your cluster and the `mlflow` namespace is active (`kubectl config set-context --current --namespace=mlflow`).
 3. **Backup Format**: Confirm whether your backup is a plain SQL file (restorable with `psql`) or a binary dump (restorable with `pg_restore`). The steps differ slightly based on this.
 
@@ -26,21 +26,10 @@ To restore an SQL backup to your PostgreSQL pod in your MLflow Kubernetes setup,
 
 ### Step 2: Copy the SQL Backup to the PostgreSQL Pod
 1. **Copy the File**:
-   Use `kubectl cp` to transfer your backup file from your local machine to the pod. Replace `/path/to/backup.sql` with the actual path to your SQL file:
+   Use `kubectl cp` to transfer your backup file from your local machine to the pod. Replace `/path/to/backup_mlflow.dump` with the actual path to your SQL file:
    ```bash
-   kubectl cp /path/to/backup.sql $POSTGRES_POD:/tmp/backup.sql -n mlflow
+   kubectl cp /path/to/backup_mlflow.dump $POSTGRES_POD:/tmp/backup_mlflow.dump -n mlflow
    ```
-
-2. **Verify the File Transfer**:
-   Exec into the pod to confirm the file is present:
-   ```bash
-   kubectl exec -it $POSTGRES_POD -n mlflow -- bash
-   ls /tmp/backup.sql
-   ```
-   If the file exists, proceed. Exit the pod with `exit`.
-
----
-Here’s the rewritten guide to restore your PostgreSQL custom-format dump (`backup_mlflow.sql`) to the `mlflowdb` database in your Kubernetes setup. I’ve included the step to terminate active connections using `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'mlflowdb';` to ensure the database can be dropped cleanly.
 
 ---
 
@@ -53,6 +42,15 @@ To avoid conflicts, drop and recreate the `mlflowdb` database after terminating 
    ```bash
    kubectl exec -it $POSTGRES_POD -n mlflow -- bash
    ```
+
+2. **Verify the File Transfer**:
+   Exec into the pod to confirm the file is present:
+   ```bash
+   ls /tmp/backup_mlflow.dump
+   ```
+   If the file exists, proceed. Exit the pod with `exit`.
+
+
 
 2. **Terminate Active Connections to `mlflowdb`**:
    Run this command to kill all active connections to the `mlflowdb` database:
@@ -79,11 +77,11 @@ To avoid conflicts, drop and recreate the `mlflowdb` database after terminating 
    ```
 
 #### Step 2: Restore the Backup with `pg_restore`
-Your `backup_mlflow.sql` is a custom-format dump, so use `pg_restore` to restore it.
+Your `backup_mlflow.dump` is a custom-format dump, so use `pg_restore` to restore it.
 
 1. **Restore the Custom-Format Dump**:
    ```bash
-   pg_restore -U admin -d mlflowdb --verbose /tmp/backup.sql
+   pg_restore -U admin -d mlflowdb --verbose /tmp/backup_mlflow.dump
    ```
    - `--verbose`: Provides detailed output to confirm the restore process.
    - Enter `pakistan` as the password when prompted.
@@ -108,7 +106,7 @@ Your `backup_mlflow.sql` is a custom-format dump, so use `pg_restore` to restore
 #### Step 3: Clean Up
 Remove the temporary backup file:
 ```bash
-kubectl exec $POSTGRES_POD -n mlflow -- rm /tmp/backup.sql
+kubectl exec $POSTGRES_POD -n mlflow -- rm /tmp/backup_mlflow.dump
 ```
 
 #### Step 4: Restart MLflow (Optional)
@@ -134,7 +132,7 @@ To avoid entering the password repeatedly:
    psql -U admin -d postgres -c "DROP DATABASE mlflowdb;"
    psql -U admin -d postgres -c "CREATE DATABASE mlflowdb;"
    psql -U admin -d mlflowdb -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
-   pg_restore -U admin -d mlflowdb --verbose /tmp/backup.sql
+   pg_restore -U admin -d mlflowdb --verbose /tmp/backup_mlflow.dump
    ```
 
 ---
@@ -165,14 +163,14 @@ To avoid entering the password repeatedly:
 4. **File Format Confusion**:
    - If `pg_restore` fails with an unexpected error, double-check the file:
      ```bash
-     head /tmp/backup.sql
+     head /tmp/backup_mlflow.dump
      ```
      - It should start with `PGDMP` for a custom-format dump. If it’s plain SQL instead, use:
        ```bash
-       psql -U admin -d mlflowdb -f /tmp/backup.sql
+       psql -U admin -d mlflowdb -f /tmp/backup_mlflow.dump
        ```
 
 ---
 
 ### Next Steps
-Run the steps above and share the output, especially from `pg_restore --verbose` or any errors encountered. Since we’ve confirmed `backup_mlflow.sql` is a custom-format dump, `pg_restore` on a fresh database should work smoothly. Let me know how it goes!
+Run the steps above and share the output, especially from `pg_restore --verbose` or any errors encountered. Since we’ve confirmed `backup_mlflow.dump` is a custom-format dump, `pg_restore` on a fresh database should work smoothly. Let me know how it goes!
