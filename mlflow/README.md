@@ -179,10 +179,10 @@ spec:
         image: jahangir842/mlflow-with-psycopg2:v2.20.3
         resources:
           limits:
-            memory: "512Mi"
+            memory: "1Gi"  # Increased from 512Mi
             cpu: "500m"
           requests:
-            memory: "256Mi"
+            memory: "512Mi"  # Increased from 256Mi
             cpu: "250m"
         ports:
         - containerPort: 5000
@@ -225,6 +225,7 @@ spec:
   - port: 5000
     targetPort: 5000
     nodePort: 30500
+
 ```
 
 ---
